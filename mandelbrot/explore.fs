@@ -24,8 +24,9 @@ fvariable incy   0.1e incy f!
 : shifty incy f@ f* inity f+! ;
 : view-adjust fdup xsize s>f 0.25e f* f* shiftx
                    ysize s>f 0.25e f* f* shifty ;
-: zoom-in 1e view-adjust  0.5e incy f*!  0.5e incx f*! ;
-: zoom-out 2.0e incy f*!  2.0e incx f*!  -1e view-adjust ;
+: scale-adjust fdup incy f*! incx f*! ;
+: zoom-in 1e view-adjust  0.5e scale-adjust ; 
+: zoom-out 2.0e scale-adjust -1e view-adjust ;
 : zoom/quit? 
       toupper
       CASE
