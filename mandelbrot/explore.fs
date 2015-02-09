@@ -17,7 +17,7 @@ fvariable incy   0.1e incy f!
     next mag 2e f>    I 32 = or   IF I emit LEAVE THEN
   -1 +LOOP   nextx LOOP  cr nexty LOOP ;
 : cmds cr ." Zoom-(I)n  Zoom-(O)ut  (Q)uit " cr
-          ." (L)eft  (R)ight  (U)p  (D)own " cr ;
+          ." Use cursor keys to pan around. " cr ;
 : f+! tuck f@ f+ swap f! ;
 : f*! tuck f@ f* swap f! ;
 : shiftx incx f@ f* initx f+! ;
@@ -26,15 +26,26 @@ fvariable incy   0.1e incy f!
                    ysize s>f 0.25e f* f* shifty ;
 : zoom-in 1e view-adjust  0.5e incy f*!  0.5e incx f*! ;
 : zoom-out 2.0e incy f*!  2.0e incx f*!  -1e view-adjust ;
+: zoom/quit? 
+      toupper
+      CASE
+       [CHAR] I OF zoom-in ENDOF
+       [CHAR] O OF zoom-out ENDOF
+       [CHAR] Q OF cr ." BYE!" bye ENDOF
+      ENDCASE ;
+: pan?  
+      ekey>fkey IF
+        CASE
+          k-up    OF -4.0e shifty ENDOF
+          k-down  OF  4.0e shifty ENDOF
+          k-left  OF -4.0e shiftx ENDOF
+          k-right OF  4.0e shiftx ENDOF
+        ENDCASE
+      ELSE drop THEN ;
 : main
     page mandel cmds
-    key toupper
-    CASE
-     [CHAR] I OF zoom-in ENDOF
-     [CHAR] O OF zoom-out ENDOF
-     [CHAR] L OF -4.0e shiftx ENDOF
-     [CHAR] R OF  4.0e shiftx ENDOF
-     [CHAR] U OF -4.0e shifty ENDOF
-     [CHAR] D OF  4.0e shifty ENDOF
-     [CHAR] Q OF cr ." BYE!" EXIT ENDOF
-    ENDCASE recurse ;
+    ekey ekey>char 
+    IF zoom/quit? ELSE pan? THEN 
+    recurse ;
+
+main \ run the program!
