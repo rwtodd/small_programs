@@ -1,25 +1,50 @@
 fvariable x fvariable y
-fvariable zx fvariable zy
 fvariable initx  -2e initx f!
 fvariable inity  -1e inity f!
 fvariable incx   0.04e incx f!
 fvariable incy   0.1e incy f!
-24 constant ysize   80 constant xsize
+34 constant ysize   80 constant xsize
 
-: xs! fdup x f! zx f! ;    : ys! fdup y f! zy f! ;
-: nextx x f@ incx f@ f+ xs! y f@ zy f! ;
-: nexty y f@ incy f@ f+ ys! initx f@ xs! ;
-: fsq fdup f* ;    : 2sq fover fsq fover fsq ;
-: next zx f@ zy f@   2sq f- x f@ f+ zx f!   f* 2e f* y f@ f+ zy f! ;
-: mag zx f@ fsq zy f@ fsq f+ fsqrt ;
-: mandel cr inity f@ ys!  initx f@ xs!
-  ysize 0 DO  xsize 0 DO  32 126 DO
-    next mag 2e f>    I 32 = or   IF I emit LEAVE THEN
-  -1 +LOOP   nextx LOOP  cr nexty LOOP ;
+\ **********************************************************************
+\ Some macros to inline the low-level stuff
+: f+! ( sym F: n -- ) POSTPONE dup POSTPONE f@ 
+                      POSTPONE f+ POSTPONE f! ; immediate
+: f*! ( F: n sym -- ) POSTPONE dup POSTPONE f@ 
+                      POSTPONE f* POSTPONE f! ; immediate
+: -frot ( F: a b c -- F: c a b ) POSTPONE frot POSTPONE frot ; immediate
+: fsq   POSTPONE fdup POSTPONE f* ; immediate 
+: 2fsq  POSTPONE fover POSTPONE fsq POSTPONE fover POSTPONE fsq ; immediate
+
+
+\ **********************************************************************
+\ Compute a mandelbrot set value at a point
+\ **********************************************************************
+: next ( F: x y -- F: x' y' ) 2fsq f- x f@ f+ -frot   f* f2*  y f@ f+ ;
+: mag ( F: x y -- x y mag ) 2fsq f+ fsqrt ;
+: mandel-point ( F: r F: i -- n )
+    33 126 DO
+       next mag 2e f>   IF fdrop fdrop I UNLOOP EXIT THEN
+    -1 +LOOP 
+    fdrop fdrop 32 ;
+
+
+\ **********************************************************************
+\ Loop over the screen, creating and emitting mandel-points ...
+\ **********************************************************************
+: init>xy ( -- ) inity f@ y f! initx f@ x f! ;
+: nextx ( -- ) incx f@ x f+!  ;
+: nexty ( -- ) incy f@ y f+!   initx f@ x f! ;
+: mandel ( -- ) cr init>xy
+  ysize 0 DO  xsize 0 DO  
+    x f@ y f@ mandel-point emit
+  nextx LOOP  cr nexty LOOP ;
+
+
+\ **********************************************************************
+\ Controls to pan and zoom around the field
+\ **********************************************************************
 : cmds cr ." Zoom-(I)n  Zoom-(O)ut  (Q)uit " cr
           ." Use cursor keys to pan around. " cr ;
-: f+! tuck f@ f+ swap f! ;
-: f*! tuck f@ f* swap f! ;
 : shiftx incx f@ f* initx f+! ;
 : shifty incy f@ f* inity f+! ;
 : view-adjust fdup xsize s>f 0.25e f* f* shiftx
@@ -32,21 +57,25 @@ fvariable incy   0.1e incy f!
       CASE
        [CHAR] I OF zoom-in ENDOF
        [CHAR] O OF zoom-out ENDOF
-       [CHAR] Q OF cr ." BYE!" bye ENDOF
+       [CHAR] Q OF page cr ." BYE!" bye ENDOF
       ENDCASE ;
 : pan?  
       ekey>fkey IF
         CASE
-          k-up    OF -4.0e shifty ENDOF
-          k-down  OF  4.0e shifty ENDOF
-          k-left  OF -4.0e shiftx ENDOF
-          k-right OF  4.0e shiftx ENDOF
+          k-up    OF -6.0e shifty ENDOF
+          k-down  OF  6.0e shifty ENDOF
+          k-left  OF -6.0e shiftx ENDOF
+          k-right OF  6.0e shiftx ENDOF
         ENDCASE
       ELSE drop THEN ;
-: main
-    page mandel cmds
+
+\ **********************************************************************
+\ The main program 
+\ **********************************************************************
+: main-loop
+    0 0 at-xy mandel 
     ekey ekey>char 
-    IF zoom/quit? ELSE pan? THEN 
-    recurse ;
+    IF zoom/quit? ELSE pan? THEN ;
+: main page   0 ysize 1+ at-xy cmds    begin main-loop  again ; 
 
 main \ run the program!
