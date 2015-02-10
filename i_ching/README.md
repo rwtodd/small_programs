@@ -6,6 +6,12 @@ involved, but still uses string, arrays, arithmetic, and user interaction.
 
  * **Forth**: This was the first version that I wrote, while learning
    Forth. It runs under gforth, and maybe others.   
- * **cweb**: This is a literate programming version in `C`.
+ * **cweb**: This is a literate programming version in `C`.  This is the
+   most performance-conscious of the implementations.  Probably overly-so,
+   but I was trying to emphasize `C`'s strengths. It uses `ncurses` for 
+   display.
+ * **prolog**: This is a prolog version, which uses a very declarative
+   method of describing the hexagrams (in `iching.dat`), which worked out
+   very well. 
  * _others_: More languages will get added to the repo as time allows.
 
