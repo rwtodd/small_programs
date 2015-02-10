@@ -13,5 +13,8 @@ involved, but still uses string, arrays, arithmetic, and user interaction.
  * **prolog**: This is a prolog version, which uses a very declarative
    method of describing the hexagrams (in `iching.dat`), which worked out
    very well. 
+ * **haskell**: An implementation in haskell.  It assumes it's on an terminal
+ that understands the typicall escape sequences. A fairly clean implementation,
+ I think.
  * _others_: More languages will get added to the repo as time allows.
 
