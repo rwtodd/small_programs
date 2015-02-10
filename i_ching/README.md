@@ -6,5 +6,6 @@ involved, but still uses string, arrays, arithmetic, and user interaction.
 
  * **Forth**: This was the first version that I wrote, while learning
    Forth. It runs under gforth, and maybe others.   
+ * **cweb**: This is a literate programming version in `C`.
  * _others_: More languages will get added to the repo as time allows.
 
