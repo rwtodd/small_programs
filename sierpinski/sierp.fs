@@ -1,16 +1,15 @@
 64 constant SIZE   CHAR * constant '*'
-: char-array create does> swap chars + ;
-char-array cur[]  bl c, SIZE chars allot bl c, 
-char-array new[]  SIZE chars allot            
+create line[]  SIZE chars allot bl c, 
 
-0 new[] SIZE blank   '*' SIZE 2/ new[] c!  \ initialize
+line[] SIZE blank   '*' SIZE 2/ chars line[] + c!  \ initialize
 
-: .new ( -- ) 0 new[] SIZE type cr ;
-: cur=*? ( i -- f ) cur[] c@   '*' = ;
-: parents ( i -- f1 f2 ) dup cur=*?  swap 2 + cur=*?  ;
-: >new[] ( i f -- ) [ '*' bl - ] LITERAL and bl + swap new[] c! ;
-: sierp-line ( -- ) SIZE 0 DO  i dup parents xor >new[]  LOOP ;
-: new>cur ( -- ) 0 new[]   1 cur[]   SIZE chars move ;
-: main ( -- ) SIZE 2/ 0 DO .new new>cur sierp-line LOOP ;
+: .line[] ( -- ) line[] SIZE type cr ;
+: =*? ( addr -- f ) c@   '*' = ;
+: >char ( f f -- ch ) xor [ '*' bl - ] LITERAL and bl + ;
+: init-flags ( -- f-1 f0 )  0  line[] =*? ; 
+: sierp-line ( -- ) init-flags   line[] SIZE bounds DO  
+       I 1 chars + =*?   rot over >char   I c! 
+   LOOP 2drop ;
+: main ( -- ) SIZE 2/ 0 DO .line[] sierp-line LOOP ;
 
 main bye
