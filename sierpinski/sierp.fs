@@ -9,6 +9,6 @@ new-line SIZE blank   '*' new-line SIZE 2/ chars + c!  \ init
 : parents ( i -- f1 f2 ) dup cur=*?  swap 2 + cur=*?  ;
 : new! ( i f -- ) [ '*' bl - ] LITERAL and bl + swap chars new-line + c! ;
 : sierp-line ( -- ) SIZE 0 DO  i dup parents xor new!  LOOP ;
-: new>cur ( -- ) new-line cur-line 1+ SIZE chars move ;
+: new>cur ( -- ) new-line cur-line 1 chars + SIZE chars move ;
 : main ( -- ) SIZE 2/ 0 DO .new new>cur sierp-line LOOP ;
 main bye
