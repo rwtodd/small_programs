@@ -18,9 +18,6 @@ CREATE (num->hex) 63 c,  0 c, 17 c, 34 c, 23 c, 58 c,  2 c, 16 c,
 : makeinv CREATE 64 0 DO I slow:hex->num c, LOOP ;
 makeinv (hex->num) 
 : hex->num ( hex -- n ) (hex->num) + c@ ;
-: array$"  POSTPONE c" POSTPONE over POSTPONE ! 
-           POSTPONE cell POSTPONE + ;  IMMEDIATE
-: array CREATE cells allot DOES> swap cells + ;
 
 require hextext.fs
 
@@ -42,12 +39,13 @@ variable (hex)SP   0 (hex)SP !
 \ drawing a hexagram... ***************************************************** 
 variable (hex)X variable (hex)Y
 : at ( x y  -- ) (hex)Y !   (hex)X ! ;
-: type72 ( addr count -- ) tuck type  72 swap -  spaces ;
+: type-n ( addr count len -- ) -rot  tuck type  -  spaces ;
 : .title ( n -- ) (hex)X @ (hex)Y @ 13 + at-xy  
-  title  type72 ;
+  dup s>d <<# bl hold [char] . hold # # #> type #>> 
+  title  68 type-n ;
 : .description ( n -- ) (hex)X @ (hex)Y @ 15 + at-xy
-  description type72    (hex)X @ (hex)Y @ 16 + at-xy 
-  type72 ; 
+  description 72 type-n (hex)X @ (hex)Y @ 16 + at-xy 
+  72 type-n ; 
 : .line  ( 1-or-0 n -- ) 
   (hex)X @   12 rot 2 * - (hex)Y @ +   at-xy   
   IF ." ############" ELSE ." #####  #####" THEN ;
@@ -93,7 +91,7 @@ variable (hex)X variable (hex)Y
         [CHAR] F  OF ->hextop                     ENDOF
         [CHAR] Q  OF EXIT                         ENDOF 
    ENDCASE recurse ;
-: main init(hexagrams) init(descriptions) init(trigrams)  
+: main init(trigrams) init(descriptions) 
    page .instructions mainloop page ;
 
 main bye
