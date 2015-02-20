@@ -37,32 +37,31 @@ variable (hex)SP   0 (hex)SP !
 : ->hextop! ( n -- ) (hex)SP @ inc%10 dup (hex)SP !  (hex)Stack + c! ; 
 
 \ drawing a hexagram... ***************************************************** 
-variable (hex)X variable (hex)Y
-: at ( x y  -- ) (hex)Y !   (hex)X ! ;
+3 CONSTANT (hex)X    3 CONSTANT (hex)Y
 : type-n ( addr count len -- ) -rot  tuck type  -  spaces ;
-: .title ( n -- ) (hex)X @ (hex)Y @ 13 + at-xy  
+: .title ( n -- ) (hex)X  [ (hex)Y 13 + ]L  at-xy  
   dup s>d <<# bl hold [char] . hold # # #> type #>> 
   title  68 type-n ;
-: .description ( n -- ) (hex)X @ (hex)Y @ 15 + at-xy
-  description 72 type-n (hex)X @ (hex)Y @ 16 + at-xy 
-  72 type-n ; 
-: .line  ( 1-or-0 n -- ) 
-  (hex)X @   12 rot 2 * - (hex)Y @ +   at-xy   
-  IF ." ############" ELSE ." #####  #####" THEN ;
-: nxt1  ( n -- n' 1-or-0 ) dup 1 rshift swap   1 and  ;
-: .hexlines ( hex -- )  
-   nxt1 1 .line   nxt1 2 .line   nxt1 3 .line   
-   nxt1 4 .line   nxt1 5 .line   nxt1 6 .line  drop ;
+: .description ( n -- ) description  
+    (hex)X  [ (hex)Y 15 + ]L  at-xy  72 type-n 
+    (hex)X  [ (hex)Y 16 + ]L  at-xy  72 type-n ; 
+: .line  ( hex y -- ) (hex)X over at-xy   
+    over  1 and  IF ." ############" ELSE ." #####  #####" THEN ;
+: nxt  ( hex y -- hex' y' ) 2 - >r 1 rshift r> ;
+: .hexlines ( hex -- )  [ 10 (hex)Y + ]L
+     .line nxt   .line nxt   .line nxt 
+     .line nxt   .line nxt   .line 2drop ;
 : .trigrams ( hex -- )
-   dup      trigram (hex)X @ 14 + (hex)Y @ 8 + at-xy type
-   3 rshift trigram (hex)X @ 14 + (hex)Y @ 2 + at-xy type ;
-: .hexagram ( n -- ) dup .title dup .description  num->hex dup .hexlines .trigrams ;
+   dup      trigram [ (hex)X 14 + ]L [ (hex)Y 8 + ]L  at-xy type
+   3 rshift trigram [ (hex)X 14 + ]L [ (hex)Y 2 + ]L  at-xy type ;
+: .hexagram ( n -- ) dup .title   dup .description  
+            num->hex dup .hexlines    .trigrams ;
 : incnum ( n -- n' ) dup 64 <> and 1+ ; 
 : decnum ( n -- n' ) 1- dup 0= 64 and + ; 
 
 \ transformations ***********************************************************
-: (innerhex) ( hex - hex' )  dup 1 lshift [ 32 16 8 + + ] LITERAL and  swap 
-                                 1 rshift [  4  2 1 + + ] LITERAL and + ;
+: (innerhex) ( hex - hex' )  dup 1 lshift [ 32 16 8 + + ]L and  swap 
+                                 1 rshift [  4  2 1 + + ]L and + ;
 : innerhex ( n -- n' ) num->hex  (innerhex) hex->num ;
 : inverthex ( n -- n' ) num->hex invert 63 and hex->num ;
 : (changeline) ( hex line  -- hex' ) 1 swap 1- lshift xor ;
@@ -80,7 +79,7 @@ variable (hex)X variable (hex)Y
 ." (p)rev/(n)ext  (g)o-to  (c)hange-line  (i)nner  in(v)ert" cr
 ."          (b)ack/(f)orward               (q)uit" ;
 : upkey key toupper ;
-: mainloop dup   3 3 at hextop .hexagram   question upkey  
+: mainloop dup  hextop .hexagram   question upkey  
    CASE [CHAR] N  OF hextop incnum      ->hextop! ENDOF 
         [CHAR] P  OF hextop decnum      ->hextop! ENDOF
         [CHAR] G  OF go-menu            ->hextop! ENDOF
