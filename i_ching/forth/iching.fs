@@ -3,7 +3,9 @@
 
 
 \ base data ...  ************************************************************
-CREATE (num->hex) 63 c,  0 c, 17 c, 34 c, 23 c, 58 c,  2 c, 16 c,
+:noname DOES> 1- + c@ ;
+CREATE num->hex EXECUTE
+                  63 c,  0 c, 17 c, 34 c, 23 c, 58 c,  2 c, 16 c,
                   55 c, 59 c,  7 c, 56 c, 61 c, 47 c,  4 c,  8 c,
                   25 c, 38 c,  3 c, 48 c, 41 c, 37 c, 32 c,  1 c,
                   57 c, 39 c, 33 c, 30 c, 18 c, 45 c, 28 c, 14 c,
@@ -11,13 +13,10 @@ CREATE (num->hex) 63 c,  0 c, 17 c, 34 c, 23 c, 58 c,  2 c, 16 c,
                   35 c, 49 c, 31 c, 62 c, 24 c,  6 c, 26 c, 22 c,
                   29 c, 46 c,  9 c, 36 c, 52 c, 11 c, 13 c, 44 c,
                   54 c, 27 c, 50 c, 19 c, 51 c, 12 c, 21 c, 42 c,
-: num->hex ( n -- hex ) 1- (num->hex) + c@ ;
-: slow:hex->num ( hex -- n ) (num->hex) dup 64 + swap DO 
-     I c@ over = IF drop I (num->hex) - 1+ UNLOOP EXIT THEN 
-  LOOP ; 
-: makeinv CREATE 64 0 DO I slow:hex->num c, LOOP ;
-makeinv (hex->num) 
-: hex->num ( hex -- n ) (hex->num) + c@ ;
+: slow:hex->num ( hex -- n ) 
+   65 1 DO   I num->hex  over =  IF drop I LEAVE THEN   LOOP ;
+: makeinv CREATE 64 0 DO I slow:hex->num c, LOOP DOES> + c@ ;
+makeinv hex->num 
 
 require hextext.fs
 
