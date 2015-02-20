@@ -31,6 +31,16 @@ $10450405 Constant generator
      rot bi@ +  in-bounds ;
 : random-pos ( -- x y ) WIDTH random HEIGHT random  ;
 : status-line ( -- ) 0 HEIGHT 2 + at-xy ;
+: marker-locations ( x y -- locs ) bi@ 1+ 
+    >r  0 over [ HEIGHT 1+ ] literal
+	0 r@  [ WIDTH 1+ ] literal r> ;
+: markers ( x y -- ) marker-locations 
+    at-xy [char] < emit  at-xy [char] > emit  
+	at-xy [char] ^ emit  at-xy [char] v emit ;
+: nomarkers ( x y -- ) marker-locations  
+    at-xy [char] | emit  at-xy [char] | emit  
+	at-xy [char] - emit  at-xy [char] - emit ;
+                       
 \ ***************************************************************
 
 
@@ -39,8 +49,8 @@ WIDTH 2/ VALUE EGO-x     HEIGHT 2/ VALUE EGO-Y
 char @ CONSTANT EGO-Char
 : ego-xy ( -- ) EGO-x EGO-Y board-xy ; 
 : move-ego ( x y ) TO EGO-Y TO EGO-X ; 
-: .ego ( -- ) ego-xy EGO-Char emit ;
-: erase-ego ( -- )  ego-xy bl emit ;
+: .ego ( -- ) EGO-X EGO-Y markers  ego-xy EGO-Char emit ;
+: erase-ego ( -- )  EGO-X EGO-Y nomarkers  ego-xy bl emit ;
 : relmove-ego ( dx dy ) EGO-X EGO-Y apply-movement  move-ego ;  
 : check-ego-death ( x y -- ) EGO-Y = swap EGO-X = and 
     IF ego-xy [CHAR] & emit   
@@ -119,6 +129,7 @@ CREATE enemies MAX-ENEMIES cells allot
                ELSE drop THEN THEN ;
 \ ***************************************************************
 
+
 \ *********** Collision Detection *******************************
 : en-location-bits [ 65535 invert ] literal and ;
 : new-death ( eaddr -- ) 
@@ -127,8 +138,8 @@ CREATE enemies MAX-ENEMIES cells allot
 : detect-collisions 
     enemies @ en-pos check-ego-death
     enemies #enemies 1- cells bounds DO
-       I @ en-location-bits   I cell+ @ en-location-bits  =
-       IF I new-death THEN 
+       I @ en-location-bits   I cell+ @ en-location-bits 
+       = IF I new-death THEN 
        I cell+ @ en-pos check-ego-death 
     cell +LOOP ;
 \ ***************************************************************
@@ -145,12 +156,16 @@ HERE seed !
    LOOP drop ;
 
 : move-enemy ( e -- e' ) only-robots 
-    dup erase-enemy accost  dup .enemy ;  
+    accost  dup .enemy ;  
+: erase-robot ( eaddr --  ) 
+    @ dup robot? IF erase-enemy ELSE drop THEN ;
+: erase-all ( -- ) ['] erase-robot do-enemies ;
 
 : .enemy @ .enemy ;
 : init-draw-enemies ( -- ) ['] .enemy do-enemies ;
 
-: loop  get-input    ['] move-enemy map-enemies  
+: loop  get-input    ['] erase-robot do-enemies 
+        ['] move-enemy map-enemies  
         sort-enemies    detect-collisions ;
 
 : clear-status status-line 72 spaces ;
