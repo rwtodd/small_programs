@@ -22,9 +22,11 @@ $10450405 Constant generator
 : .top ( -- ) [char] + [char] - .line ; 
 : .side ( -- ) [char] | bl .line ;
 : .board ( -- ) .top   HEIGHT 0 DO .side LOOP .top ; 
-: board-xy ( x y -- ) swap 1+ swap 1+ at-xy ;
-: in-bounds ( x y -- x' y' ) 0 MAX HEIGHT 1- MIN swap 
-                             0 MAX WIDTH  1- MIN swap ;
+: board-xy ( x y -- ) bi@ 1+   at-xy ;
+: in-bounds ( x y -- x' y' ) 0 MAX HEIGHT 1- MIN >r 
+                             0 MAX WIDTH  1- MIN r> ;
+: apply-movement ( x y dx dy -- x' y' )
+     rot bi@ +  in-bounds ;
 : random-pos ( -- x y ) WIDTH random HEIGHT random  ;
 : status-line ( -- ) 0 HEIGHT 2 + at-xy ;
 \ ***************************************************************
@@ -37,8 +39,7 @@ char @ CONSTANT EGO-Char
 : move-ego ( x y ) TO EGO-Y TO EGO-X ; 
 : .ego ( -- ) ego-xy EGO-Char emit ;
 : erase-ego ( -- )  ego-xy bl emit ;
-: relmove-ego ( xamt yamt )  EGO-X swap EGO-Y bi@ + 
-   in-bounds    move-ego  ; 
+: relmove-ego ( dx dy ) EGO-X EGO-Y apply-movement  move-ego ;  
 : check-ego-death ( x y -- ) EGO-Y = swap EGO-X = and 
     IF ego-xy [CHAR] & emit   
        status-line ." YOU ARE DEAD!" key exit-program THEN ;
@@ -88,16 +89,13 @@ CREATE enemies MAX-ENEMIES cells allot
 
 \ *********** enemy movement ************************************
 : only-robots ( e -- e ) dup robot? invert IF r> drop THEN ;
-: direction ( c _ -- _ dc ) rot - sgn ;
-: ego-direction ( x y -- dx dy ) EGO-X direction   EGO-Y direction ; 
-: neg-or-pick ( n -- n' ) dup 0 = IF 1+ 2 random IF negate THEN 
-                                ELSE negate THEN ;
-: +-? ( n -- n' ) 100 random  dup 95 > IF drop neg-or-pick ELSE 
-                                  85 > IF drop 0 THEN THEN ;
+: point-at ( c _ -- _ dc ) rot - sgn ;
+: ego-direction ( x y -- dx dy ) EGO-X point-at  EGO-Y point-at ; 
+: +-? ( n -- n' ) 100 random  dup 94 > IF 2drop 3 random 1- ELSE 
+                                  89 > IF  drop 0 THEN THEN ;
 : random-movement ( dx dy -- dx' dy' )  bi@ +-? ;
-: apply-movement ( x y dx dy -- x' y' ) rot bi@ + ;
 : accost ( e -- e' ) Type:ROBOT swap   en-pos 2dup ego-direction 
-    random-movement  apply-movement  in-bounds  new-enemy ;
+    random-movement  apply-movement   new-enemy ;
 \ ***************************************************************
 
 
@@ -158,4 +156,4 @@ HERE seed !
     page .board .ego init-draw-enemies 
     BEGIN status-line loop AGAIN ; 
 
-5 10 main
+\ 5 10 main
