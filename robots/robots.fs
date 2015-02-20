@@ -4,6 +4,8 @@
 \ ********** helper functions that don't belong anywhere else ***
 : bi@ ' dup COMPILE, POSTPONE >r COMPILE, POSTPONE r> ; immediate
 : exit-program  page ." BYE!" bye ;
+: get-num ( min max -- n ) pad 10 accept   pad swap s>number d>s  
+   min max ;
 \ ***************************************************************
 
 
@@ -151,9 +153,17 @@ HERE seed !
 : loop  get-input    ['] move-enemy map-enemies  
         sort-enemies    detect-collisions ;
 
-: main ( #h #r  -- )    
+: clear-status status-line 72 spaces ;
+: question" POSTPONE clear-status POSTPONE status-line 
+            POSTPONE ." ; immediate
+: main ( -- )    
+    page .board 
+    question" ROBOTS! How many holes in the ground? " 
+    1 20 get-num 
+    question" ROBOTS! How many robots attacking? " 
+    1 over MAX-ENEMIES - negate get-num
     random-enemies  
-    page .board .ego init-draw-enemies 
+    clear-status .ego init-draw-enemies 
     BEGIN status-line loop AGAIN ; 
 
-\ 5 10 main
+main
