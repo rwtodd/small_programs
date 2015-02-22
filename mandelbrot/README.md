@@ -1,7 +1,7 @@
 # Mandelbrot Explorer
 
-This was just a fun program, prompted by a 
-post to `comp.lang.forth` asking to see a 
+This was just a fun program, prompted by 
+[a post to `comp.lang.forth`][1] asking to see a 
 small ASCII mandelbrot program.
 
 You want a big terminal window like at least 90x40 for these to look
@@ -15,3 +15,4 @@ xterm larger.
 These programs were tested with gforth, but may work in other
 Forths without much trouble.  I'm not sure.
 
+[1]: https://groups.google.com/d/topic/comp.lang.forth/zXQrdJOKQdY/discussion
