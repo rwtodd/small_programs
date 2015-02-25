@@ -7,7 +7,13 @@ the same word backwards).  So, here is
 a little forth program that applies the
 cipher to all input text.
 
+    echo "wizard" | gforth atbash.fs
+	wizard
+	DRAZIW
+
+or
     cat file.txt | gforth atbash.fs
+	...
 
 [1]: http://en.wikipedia.org/wiki/Atbash
 
