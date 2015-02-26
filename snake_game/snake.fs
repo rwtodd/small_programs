@@ -4,8 +4,6 @@
 \ ********** helper functions that don't belong anywhere else ***
 : bi@ ' dup COMPILE, POSTPONE >r COMPILE, POSTPONE r> ; immediate
 : exit-program  page ." BYE!" bye ;
-: get-num ( min max -- n ) pad 10 accept   pad swap s>number d>s  
-   min max ;
 \ ***************************************************************
 
 
@@ -51,7 +49,7 @@ $10450405 Constant generator
              speed 10 - 20 max to speed ;
 
 : eat-keys  ekey? IF ekey drop recurse THEN ;
-: die!die! clear-status ." YOU HAVE DIED!" 
+: die!die! clear-status ." YOU HAVE DIED! SCORE: " score .
     500 ms eat-keys key exit-program ; 
 \ ***************************************************************
 
@@ -146,6 +144,7 @@ variable head-idx
   ENDCASE ;
 
 : handle-keys 
+    rnd drop ( exercise random generator )
     ekey ekey>fkey 
 	IF proc-fkey 
   ELSE ekey>char IF proc-char 
