@@ -144,15 +144,19 @@ CREATE enemies MAX-ENEMIES cells allot
     cell +LOOP ;
 \ ***************************************************************
 
-HERE seed ! 
-
+utime xor seed ! 
+: near-center? ( x y -- f ) 
+    [ HEIGHT 2/ dup 3 + swap 2 - ] LITERAL LITERAL within >r 
+    [ WIDTH  2/ dup 3 + swap 2 - ] LITERAL LITERAL within r> and ;
+: off-center ( -- x y )
+    begin random-pos 2dup near-center? while 2drop repeat ; 
 : random-enemies ( #h #r ) 
    2dup + TO #enemies
    enemies swap 0 DO 
-      Type:ROBOT random-pos new-enemy over ! cell+
+      Type:ROBOT off-center new-enemy over ! cell+
    LOOP 
    swap 0 DO
-      Type:HOLE random-pos new-enemy over ! cell+
+      Type:HOLE off-center new-enemy over ! cell+
    LOOP drop ;
 
 : move-enemy ( e -- e' ) only-robots 

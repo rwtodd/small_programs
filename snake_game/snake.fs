@@ -94,7 +94,7 @@ variable head-idx
   ELSE dup to apple-loc [char] a .ch THEN ;
 
 : init 
-   HERE seed !   page .board   init(snake) init(apple) ; 
+   utime xor seed !   page .board   init(snake) init(apple) ; 
 \ ***************************************************************
 
 
@@ -144,7 +144,6 @@ variable head-idx
   ENDCASE ;
 
 : handle-keys 
-    rnd drop ( exercise random generator )
     ekey ekey>fkey 
 	IF proc-fkey 
   ELSE ekey>char IF proc-char 
