@@ -29,4 +29,4 @@ In J, it's just: `([: ":@-.&0"1 !~/~)@i. 16`
 </code></pre></div>
 
 [1]: https://groups.google.com/d/topic/comp.lang.forth/3TTncBdnHjk/discussion
-
+[2]: http://jsoftware.com/
