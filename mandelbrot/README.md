@@ -11,8 +11,9 @@ xterm larger.
 
  - **mandel.fs**  just draws the ASCII picture as requested.
  - **explore.fs** lets you zoom and pan around the ASCII image. 
+ - **mandel.cpp** a c++ version of the interactive program
 
-These programs were tested with gforth, but may work in other
+The forth programs were tested with gforth, but may work in other
 Forths without much trouble.  I'm not sure.
 
 [1]: https://groups.google.com/d/topic/comp.lang.forth/zXQrdJOKQdY/discussion
