@@ -9,6 +9,9 @@ Of course, if someone _really_ wants to compete
 on size, [the J language][2] is the way to go!
 In J, it's just: `([: ":@-.&0"1 !~/~)@i. 16` 
 
+_Edit 2015-03-23__: I added a straight-forward prolog
+version (the file has a `.pl` extension).
+
 <div><pre><code>
 1
 1 1
