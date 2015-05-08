@@ -15,5 +15,8 @@ or
     cat file.txt | gforth atbash.fs
 	...
 
+_Edit 2015-05-08:_ Added a scala version which
+performs atbash on its first argument.
+
 [1]: http://en.wikipedia.org/wiki/Atbash
 
