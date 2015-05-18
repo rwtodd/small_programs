@@ -15,7 +15,7 @@ next_line([          _|Rest],[0'*|Out])  :- next_line(Rest,Out).
 plines(1,Line) :- format(Line).
 plines(N,Line) :- N > 1, N1 is N - 1,
                   format(Line), nl,
-				  next_line([32|Line],Line1),
-				  plines(N1,Line1).
+                  next_line([32|Line],Line1),
+                  plines(N1,Line1).
 
 main :- init_line(IL), size(Sz), Sz2 is Sz/2, plines(Sz2,IL), halt.
