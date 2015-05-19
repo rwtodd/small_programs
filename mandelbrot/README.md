@@ -13,6 +13,8 @@ xterm larger.
  - **explore.fs** lets you zoom and pan around the ASCII image. 
  - **mandel.cpp** a c++ version of the interactive program
  - **mandelbrot.scala** a scala version of the interactive program
+ - **mandel.cs** a csharp interactive program.
+ - **mandel.pl** a prolog verison, just paints the scene for now.
 
 The forth programs were tested with gforth, but may work in other
 Forths without much trouble.  I'm not sure.
