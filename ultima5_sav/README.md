@@ -26,8 +26,8 @@ just don't have to worry about your next meal, etc. The code is all
 very well-explained, so if you think I went overboard you can take
 out whatever you'd still like to srounge around for in-game.
 
-Two Versions
--------------
+Multiple Versions
+-----------------
 
 I did this program in the [literate style][litprog] in `cweb`.  You
 can see the woven output as well as the raw source in the repo.
@@ -48,4 +48,9 @@ such a script at all.
 I also did a version in prolog, just to see what it would be like to
 do such an imperative type of program in the language.  It used a 
 custom litprog tool, and I've provided the woven output for posterity.
+
+Later, I did a scala version, which I then converted to java in order
+to compare the verbosity.  It was interesting: as of June 2015 the
+java code is like 300 chars longer, but the resulting class files are
+about 6kb smaller for the java version (8kb vs 2kb in .class files). 
 
