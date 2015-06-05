@@ -54,3 +54,6 @@ to compare the verbosity.  It was interesting: as of June 2015 the
 java code is like 300 chars longer, but the resulting class files are
 about 6kb smaller for the java version (8kb vs 2kb in .class files). 
 
+Since this is basically a script, I thought it would make sense to
+make a javascript (nashorn) version from the java source. The 
+translation was pretty easy.
