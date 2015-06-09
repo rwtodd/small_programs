@@ -18,5 +18,7 @@ or
 _Edit 2015-05-08:_ Added a scala version which
 performs atbash on its first argument.
 
+_Edit 2015-06-09:_ Added a c++ version.
+
 [1]: http://en.wikipedia.org/wiki/Atbash
 

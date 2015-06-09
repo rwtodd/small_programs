@@ -3,7 +3,7 @@
 
 using value = std::complex<double> ;
 
-inline char mandel_point(const value &z) {
+inline static char mandel_point(const value &z) {
    value x {z};
    char ch = 126;
 
