@@ -51,45 +51,42 @@ scene( Frame ) :-
 
 % get input from the user, and act upon it ***************
 parse_commands( [], LastFrame, LastFrame ).
-parse_commands( [ 0'l | Rest ], Frame, LastFrame ) :-
+parse_commands( [ A | Rest ], Frame, LastFrame ) :-
+  run_command( A, Frame, Frame1 ), !,
+  parse_commands( Rest, Frame1, LastFrame ).
+
+run_command( 0'l, Frame, NewFrame ) :-           % go left
   Frame = frame( ULX, ULY, XScale, YScale ),
   ULX1 is ULX - 6 * XScale,
-  NewFrame = frame( ULX1, ULY, XScale, YScale ), !,
-  parse_commands( Rest, NewFrame, LastFrame ). 
-parse_commands( [ 0'r | Rest ], Frame, LastFrame ) :-
+  NewFrame = frame( ULX1, ULY, XScale, YScale ).
+run_command( 0'r, Frame, NewFrame ) :-           % go right
   Frame = frame( ULX, ULY, XScale, YScale ),
   ULX1 is ULX + 6 * XScale,
-  NewFrame = frame( ULX1, ULY, XScale, YScale ), !,
-  parse_commands( Rest, NewFrame, LastFrame ). 
-parse_commands( [ 0'u | Rest ], Frame, LastFrame ) :-
+  NewFrame = frame( ULX1, ULY, XScale, YScale ).
+run_command( 0'u, Frame, NewFrame ) :-           % go up
   Frame = frame( ULX, ULY, XScale, YScale ),
   ULY1 is ULY + 4 * YScale,
-  NewFrame = frame( ULX, ULY1, XScale, YScale ), !,
-  parse_commands( Rest, NewFrame, LastFrame ). 
-parse_commands( [ 0'd | Rest ], Frame, LastFrame ) :-
+  NewFrame = frame( ULX, ULY1, XScale, YScale ).
+run_command( 0'd, Frame, NewFrame ) :-           % go down
   Frame = frame( ULX, ULY, XScale, YScale ),
   ULY1 is ULY - 4 * YScale,
-  NewFrame = frame( ULX, ULY1, XScale, YScale ), !,
-  parse_commands( Rest, NewFrame, LastFrame ). 
-parse_commands( [ 0'i | Rest ], Frame, LastFrame ) :-
+  NewFrame = frame( ULX, ULY1, XScale, YScale ).
+run_command( 0'i, Frame, NewFrame ) :-           % zoom in
   Frame = frame( ULX, ULY, XScale, YScale ),
   ULX1 is ULX + (72/4) * XScale,
   ULY1 is ULY - (26/4) * YScale,
   XScale1 is XScale / 2,
   YScale1 is YScale / 2,
-  NewFrame = frame( ULX1, ULY1, XScale1, YScale1 ), !,
-  parse_commands( Rest, NewFrame, LastFrame ). 
-parse_commands( [ 0'o | Rest ], Frame, LastFrame ) :-
+  NewFrame = frame( ULX1, ULY1, XScale1, YScale1 ).
+run_command( 0'o, Frame, NewFrame ) :-           % zoom out
   Frame = frame( ULX, ULY, XScale, YScale ),
   XScale1 is XScale * 2,
   YScale1 is YScale * 2,
   ULX1 is ULX - (72/4) * XScale1,
   ULY1 is ULY + (26/4) * YScale1,
-  NewFrame = frame( ULX1, ULY1, XScale1, YScale1 ), !,
-  parse_commands( Rest, NewFrame, LastFrame ). 
-parse_commands( [ 0'q | _ ], _, done ) :- !.
-parse_commands( [ _ | Rest ], Frame, LastFrame ) :-
-  parse_commands( Rest, Frame, LastFrame ).
+  NewFrame = frame( ULX1, ULY1, XScale1, YScale1 ).
+run_command( 0'q, _, done ).                     % quit
+run_command( _ , Frame, Frame ).                 % ignore unknowns
 
 main_loop( done ) :- !.
 main_loop( Frame ) :-
