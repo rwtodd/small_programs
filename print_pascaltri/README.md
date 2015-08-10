@@ -12,7 +12,11 @@ In J, it's just: `([: ":@-.&0"1 !~/~)@i. 16`
 _Edit 2015-03-23__: I added a straight-forward prolog
 version (the file has a `.pl` extension).
 
-<div><pre><code>
+_Edit 2015-08-10__: I added a scala port of the forth
+version. I did a tail recursive one, but then switched
+to a more imperative style to match the forth better.
+
+```
 1
 1 1
 1 2 1
@@ -29,7 +33,7 @@ version (the file has a `.pl` extension).
 1 13 78 286 715 1287 1716 1716 1287 715 286 78 13 1
 1 14 91 364 1001 2002 3003 3432 3003 2002 1001 364 91 14 1
 1 15 105 455 1365 3003 5005 6435 6435 5005 3003 1365 455 105 15 1
-</code></pre></div>
+```
 
 [1]: https://groups.google.com/d/topic/comp.lang.forth/3TTncBdnHjk/discussion
 [2]: http://jsoftware.com/

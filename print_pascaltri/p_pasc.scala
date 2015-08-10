@@ -16,7 +16,5 @@ object PascalTri {
      (0 until height) foreach draw1
   }
 
-  def main( argv : Array[String] )  = {
-     draw( 16 )
-  }
+  def main( argv : Array[String] ) :Unit  = draw(16)
 }
