@@ -4,7 +4,9 @@ This is just a silly program prompted by [yet another "challenge"][1]
 on `comp.lang.forth`.  It takes three arrays of hanoi disks, and prints
 the towers.
 
-Example:
+_Update: 2015/08/10_: Added a scala version of the program.
+
+Example (forth version):
 
 ~~~~
 a[ 4 c, 5 c, 6 c, 7 c, ]a  \ tower 1

@@ -9,10 +9,10 @@ Of course, if someone _really_ wants to compete
 on size, [the J language][2] is the way to go!
 In J, it's just: `([: ":@-.&0"1 !~/~)@i. 16` 
 
-_Edit 2015-03-23__: I added a straight-forward prolog
+_Edit 2015-03-23_: I added a straight-forward prolog
 version (the file has a `.pl` extension).
 
-_Edit 2015-08-10__: I added a scala port of the forth
+_Edit 2015-08-10_: I added a scala port of the forth
 version. I did a tail recursive one, but then switched
 to a more imperative style to match the forth better.
 
