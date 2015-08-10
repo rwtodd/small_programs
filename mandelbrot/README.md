@@ -9,12 +9,13 @@ ok... that's bigger than the windows shell default, but you can change
 this in the menus. For linux of OS X it's no problem to just make the
 xterm larger.
 
- - **mandel.fs**  just draws the ASCII picture as requested.
- - **explore.fs** lets you zoom and pan around the ASCII image. 
+ - **mandel.forth**  just draws the ASCII picture as requested.
+ - **explore.forth** lets you zoom and pan around the ASCII image. 
  - **mandel.cpp** a c++ version of the interactive program
  - **mandelbrot.scala** a scala version of the interactive program
- - **mandel.cs** a csharp interactive program.
- - **mandel.pl** a prolog verison, just paints the scene for now.
+ - **mandel.cs** a C# (csharp) interactive program.
+ - **mandel.pl** a prolog verison of the interactive program.
+ - **mandel.fs** a F# (fsharp) version of the interactive program.
 
 The forth programs were tested with gforth, but may work in other
 Forths without much trouble.  I'm not sure.
