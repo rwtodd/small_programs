@@ -1,12 +1,27 @@
-\ vim: set filetype=forth :
+// fsharp version
 
-: a[ here 0 c, ; : ]a here over - 1- over c! ;
-0 value disks : sz 2* 1+ ; : .c*n 0 DO dup emit LOOP drop ;
-: center swap disks sz over - 2/ dup spaces -rot .c*n spaces ;
-: .pr disks over c@ -  rot - negate dup 0<
-   IF 2drop 1 [char] | ELSE  + 1+ c@ sz [char] - THEN center ;
-: hanoi { a b c gap } a c@ b c@ c c@ + + dup TO disks  0
-   DO I a .pr gap spaces  I b .pr  gap spaces I c .pr cr LOOP ;
+let draw_hanoi col1 col2 col3 spacing =
+  let spacingstr = String.replicate spacing " "
+  let dsize = 2*d + 1
+  let colsz = dsize (Array.max [| Array.max col1 ; Array.max col2 ; Array.max col3 |])
+  let height = col1.Length + col2.Length + col3.Length
+  let draw1 idx (arr:int[]) =
+     let offset = height - arr.Length
+     let cindx = idx - offset
+     let (dchr,dsz) = if cindx >= 0 then ("-",dsize arr.[cindx]) else ("|",1)
+     let spaces = String.replicate ((colsz - dsz)/2) " "
+     let disk = String.replicate dsz dchr
+     printf "%s%s%s%s" spaces disk spaces spacingstr
+  let rec each_disk cur = 
+     if cur = height
+     then ()
+     else
+        draw1 cur col1 ;  draw1 cur col2 ;  draw1 cur col2 ;  printfn ""
+        each_disk (cur+1)
+  each_disk 0
 
-a[ 4 c, 5 c, 6 c, 7 c, ]a a[  2 c, 3 c, ]a a[ 1 c, ]a 1 hanoi
+[<EntryPoint>]
+let main argv =
+  draw_hanoi [| 4; 5; 6; 7; |]  [| 2; 3 |]  [| 1 |]  1
+  0
 
