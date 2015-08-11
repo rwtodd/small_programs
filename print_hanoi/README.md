@@ -5,6 +5,7 @@ on `comp.lang.forth`.  It takes three arrays of hanoi disks, and prints
 the towers.
 
 _Update: 2015/08/10_: Added a scala version of the program.
+
 _Update: 2015/08/11_: Added fsharp (F#) version, and renamed
 the forth version from .fs to .forth, since fsharp likes the
 .fs extension..
