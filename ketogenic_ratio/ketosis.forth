@@ -23,7 +23,7 @@ reset
 \ report on the ketogenic ratio
 : .ratio    cr cr cr 
    ." You ate " carbs f@ f. ." Carbs, " 
-   prot fetch f. ." Protein, and " fat f@ f. ." fat." cr
+   prot f@ f. ." Protein, and " fat f@ f. ." fat." cr
    ." Ketogenic Ratio:   " kr f. cr 
    ." Fat for a KR of 2: " 2kr:fat fdup f. cr
    ." So you need to eat " fat f@ f- fdup fabs f. 
