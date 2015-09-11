@@ -36,4 +36,4 @@ gforth ordered_words.forth < wordlist.txt
 printing out the length for convenience.
 
 [1]: https://groups.google.com/d/topic/comp.lang.forth/qQtSWWql3U8/discussion
-
+[2]: http://programmingpraxis.com/2015/07/14/ordered-words/
