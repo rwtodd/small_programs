@@ -22,6 +22,5 @@
         loop
     then ;
 
-: d10*  2dup d2* d2* d+ d2* ;
-: solve 1 0 $3fe num 0 d10* d. ;
+: solve 1 0 $3fe num 10 m* d. ;
 
