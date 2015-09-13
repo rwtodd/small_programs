@@ -22,6 +22,8 @@ on the stack one time out of many recursive invocations, which
 is something that's hard to do most languages.  I liked it so 
 much I adapted it to my 32-bit gforth and saved it as solution 2.
 
+_Edit: 2015-09-13_ I added a solution in prolog.
+
 A Bonus
 =======
 
