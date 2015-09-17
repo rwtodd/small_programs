@@ -22,5 +22,21 @@ on the stack one time out of many recursive invocations, which
 is something that's hard to do most languages.  I liked it so 
 much I adapted it to my 32-bit gforth and saved it as solution 2.
 
-[1]: https://groups.google.com/d/topic/comp.lang.forth/qQtSWWql3U8/discussion
+_Edit: 2015-09-13_ I added a solution in prolog.
 
+A Bonus
+=======
+
+The [entry][3] on programming praxis mentioned [this other challenge][2],
+so I decided to do it as well.  You just run it like so:
+
+```
+gforth ordered_words.forth < wordlist.txt 
+```
+
+... and it will give the largest ordered word, as well as 
+printing out the length for convenience.
+
+[1]: https://groups.google.com/d/topic/comp.lang.forth/qQtSWWql3U8/discussion
+[2]: http://programmingpraxis.com/2015/07/14/ordered-words/
+[3]: http://programmingpraxis.com/2015/07/21/a-number-puzzle/
