@@ -16,6 +16,7 @@ xterm larger.
  - **mandel.cs** a C# (csharp) interactive program.
  - **mandel.pl** a prolog verison of the interactive program.
  - **mandel.fs** a F# (fsharp) version of the interactive program.
+ - **mandel.hs** a haskell version of the interactive program.
 
 The forth programs were tested with gforth, but may work in other
 Forths without much trouble.  I'm not sure.
