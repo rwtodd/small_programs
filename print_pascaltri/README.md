@@ -16,6 +16,8 @@ _Edit 2015-08-10_: I added a scala port of the forth
 version. I did a tail recursive one, but then switched
 to a more imperative style to match the forth better.
 
+_Edit 2015-10-06_: I've added golang and haskell versions now.
+
 ```
 1
 1 1
