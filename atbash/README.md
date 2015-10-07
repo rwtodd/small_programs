@@ -24,5 +24,7 @@ _Edit 2015-08-10:_ Added an F# (fsharp) version.
 And, since fsharp like the .fs extension, I changed
 the forth versions to .forth.
 
+_Edit 2015-10-07:_ Added a haskell version.
+
 [1]: http://en.wikipedia.org/wiki/Atbash
 
