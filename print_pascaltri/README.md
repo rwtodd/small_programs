@@ -18,6 +18,12 @@ to a more imperative style to match the forth better.
 
 _Edit 2015-10-06_: I've added golang and haskell versions now.
 
+_Edit 2015-10-12_: I've made a second haskell program, which generates
+an infinite triangle, and then prints the first 15 rows.  More idiomatic,
+I would guess. More readable than the formula used in the other versions,
+in any case, but with the vice of needing the current row in memory
+in order to compute the next one. 
+
 ```
 1
 1 1
