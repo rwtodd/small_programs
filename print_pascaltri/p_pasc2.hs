@@ -1,8 +1,8 @@
 module Main where
 
-pasc = [1] : map expand pasc
-  where expand lst = 1 : (sums lst) ++ [1]
-        sums x  = zipWith (+) x (tail x)  
+pasc = iterate expand [1] 
+  where expand lst = let sums = zipWith (+) lst (tail lst)
+                     in 1 : sums ++ [1]
 
 main = 
   putStr $ (unlines . (map show) . (take 16)) pasc
