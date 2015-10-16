@@ -1,0 +1,21 @@
+body { margin: 0; padding: 0; font-size: 12pt; color: #222; background: #f9f9f9; }
+body > header { margin-top: 0; margin-left:0; margin-right:0; margin-bottom: 1em; padding: 0 2em; background-color: #2F4659; color: #fff; border-bottom: 1px solid black; }
+body > header > h1 { margin: 0; padding: 0.5em 0; }
+body > header > h1 > a { font-size: 120%; text-decoration: none; color: #fff; }
+
+body > nav { border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; background: #f3f3f3; }
+body > nav > ul > li { float: left; }
+body > nav > ul { padding: 0 2em; list-style-type: none; margin: 0; }
+body > nav > ul > li > a { display: block; width: 15ch; padding: 0.5em 0.5em; text-decoration: none; color: #666; }
+body > nav > ul > li > a:hover { color: #fff; background: #2F4659; }
+
+main { clear: both; padding: 1em 2em; margin-bottom: 5em; }
+main > section, main > article { line-height: 1.5em; max-width: 75ch; margin: auto; text-align: justify; }
+
+footer { clear: both; padding-top: 1em; }
+footer > nav { border-top: 1px solid #ccc; border-bottom: 1px solid #ccc; background: #f3f3f3; }
+footer > nav > ul > li { float: left; }
+footer > nav > ul > li > a { display: block; padding: 0.5em 0.5em; block; width: 15ch; text-decoration: none; color: #666; }
+footer > nav > ul > li > a:hover { color: #fff; background: #2F4659; }
+footer > nav > ul { padding: 0 2em; list-style-type: none; margin: 0; }
+footer > p { clear: both;  padding: 1em 2em ; }

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ketogenic Calculator :: Wayward Code</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="ketogenic.css" type="text/css" media="all">
+</head>
+<body>
+<header> 
+<h1><a href="http://waywardcode.com">Wayward Code</a></h1>
+</header>
+<nav><ul>
+   <li><a href="http://waywardcode.com">Blog</a>
+   <li><a href="/index.html">Apps</a>
+</ul><div style="clear:both;"></div></nav>
+
+<main>
+<article><header><h1>Ketogenic Calculator</h1>
+                 <time>2015-09-08</time>
+</header>
+
+<p>We are playing with a <a href="http://www.bodyrecomposition.com/nutrition/ketosis-and-the-ketogenic-ratio-qa.html/">Ketosis-inducing diet</a>, and
+I thought it would be fun to make a little online calculator for
+the ketogenic ratio.  Below, you have three slots to add in various
+amounts of carbohydrates, proteins, and fats (all in grams).  It 
+will then calculate your ratio, and tell you how much more fat
+you need to get in order to reach a ratio of 2.  Getting enough
+fat is the hard part of this diet, so that's why it calculates
+it for you.
+
+<script type="text/javascript">
+function recalc() {
+   var tc = Number(document.getElementById('c1').value) +
+            Number(document.getElementById('c2').value) + 
+            Number(document.getElementById('c3').value) 
+   var tp = Number(document.getElementById('p1').value) + 
+            Number(document.getElementById('p2').value) + 
+            Number(document.getElementById('p3').value) 
+   var tf = Number(document.getElementById('f1').value) + 
+            Number(document.getElementById('f2').value) + 
+            Number(document.getElementById('f3').value) 
+  document.getElementById('CTOT').innerHTML = tc
+  document.getElementById('PTOT').innerHTML = tp
+  document.getElementById('FTOT').innerHTML = tf
+
+  var kr = (0.46*tp + 0.9*tf) / (tc + 0.1*tf + 0.58*tp)
+  var need = (2*tc + 0.7*tp) / 0.7 
+  var more = need - tf
+  var ml = (more>0)?"more":"less"
+  document.getElementById('KR').innerHTML=Math.round(kr*100)/100
+  document.getElementById('NEEDED').innerHTML=Math.round(need*100)/100
+  document.getElementById('HOWMUCH').innerHTML="(eat " + Math.abs(Math.round(more*100)/100) + " " + ml + ")"
+}
+</script>
+<div style="display: table; margin: auto;">
+<style scoped>
+p.row { display: table-row; }
+.cell { display: table-cell; padding: 0.2em; }
+</style>
+<p class="row">
+<span class="cell">&nbsp;</span>
+<span class="cell"><b>Carbohydrates</b></span>
+<span class="cell"><b>Protein</b></span>
+<span class="cell"><b>Fat</b></span>
+<p class="row"><span class="cell"><b>Meal&nbsp;1</b></span>
+<span class="cell"><input id="c1" type="number" step="any" oninput="recalc()"></span>
+<span class="cell"><input id="p1" type="number" step="any" oninput="recalc()"></span>
+<span class="cell"><input id="f1" type="number" step="any" oninput="recalc()"></span>
+<p class="row"><span class="cell"><b>Meal&nbsp;2</b></span>
+<span class="cell"><input id="c2" type="number" step="any" oninput="recalc()"></span>
+<span class="cell"><input id="p2" type="number" step="any" oninput="recalc()"></span>
+<span class="cell"><input id="f2" type="number" step="any" oninput="recalc()"></span>
+<p class="row"><span class="cell"><b>Meal&nbsp;3</b></span>
+<span class="cell"><input id="c3" type="number" step="any" oninput="recalc()"></span>
+<span class="cell"><input id="p3" type="number" step="any" oninput="recalc()"></span>
+<span class="cell"><input id="f3" type="number" step="any" oninput="recalc()"></span>
+<p class="row"><span class="cell"><b>Totals</b></span>
+<span class="cell">&nbsp;&nbsp;<span id="CTOT"></span></span>
+<span class="cell">&nbsp;&nbsp;<span id="PTOT"></span></span>
+<span class="cell">&nbsp;&nbsp;<span id="FTOT"></span></span>
+<p class="row"><span class="cell"><hr></span><span class="cell"><hr></span><span class="cell"><hr></span><span class="cell"><hr></span>
+<p class="row"><span class="cell"><b>Ketogenic Ratio:</b></span><span class="cell" id="KR">__</span>
+<p class="row"><span class="cell"><b>Fat for KR of 2:</b></span><span class="cell" id="NEEDED">__</span><span class="cell" id="HOWMUCH">__</span>
+</div>
+<p style="margin-top: 3em;">&nbsp;</p>
+<hr>
+<p>A fun technical note: I used css (e.g., <code>display: table-cell</code>) for the inputs above, 
+rather than just sticking them in a <code>&lt;table&gt;</code>. From what I can tell, that's more 
+semantically appropriate.
+<p>A second fun note: I made an old-school FORTH program to do the
+ratio calculation, with an engligh-like interface. It's
+<a href="https://github.com/waywardcoder/small_programs">in my
+small programs repo</a> under <cite>/ketogenic_ratio</cite>.
+
+</article>
+</main>
+
+<footer>
+<nav><ul>
+  <li><a href="https://github.com/waywardcoder">Github Profile</a> 
+  <li><a href="https://twitter.com/WaywardCoder">Twitter Profile</a>
+</ul><div style="clear:both;"></div></nav>
+<p>Copyright 2015. All Righs Reserved.</p>
+</footer>
+
+</body>
+</html>

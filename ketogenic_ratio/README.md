@@ -6,7 +6,7 @@ and I thought it would be fun to make a calculator
 for the needed ratio of carbohydrates to protein to
 fat.
 
-I [blogged a javascript calculator](http://waywardcode.com/blog/2015/0908.html),
+I [made a javascript calculator](http://apps.waywardcode.com/ketogenic/),
 but I also wanted to make an old-school forth version.
 
 In the forth version, I made the interface like the ones you
@@ -36,4 +36,8 @@ adds the amounts into the right bin.  You can make additional
 totals. A `RESET` will start over the process.
 
 It's a very 1960's interface, and I had fun devising it.
+
+_Edit 2015-10-16_: the html/javascript version is now in this repository,
+too.
+ 
 
