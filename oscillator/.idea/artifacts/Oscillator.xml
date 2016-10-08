@@ -1,0 +1,16 @@
+<component name="ArtifactManager">
+  <artifact type="javafx" name="Oscillator">
+    <output-path>$PROJECT_DIR$/out/artifacts/</output-path>
+    <properties id="javafx-properties">
+      <options>
+        <option name="appClass" value="sample.Main" />
+      </options>
+    </properties>
+    <root id="root">
+      <element id="archive" name="Oscillator.jar">
+        <element id="module-output" name="oscillator" />
+        <element id="library" level="project" name="Maven: org.jetbrains.kotlin:kotlin-runtime:1.0.4" />
+      </element>
+    </root>
+  </artifact>
+</component>
