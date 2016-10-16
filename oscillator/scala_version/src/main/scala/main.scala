@@ -49,7 +49,6 @@ final class Controller {
   }
 
   def initialize() : Unit = {
-      System.out.println("hi")
       sliderLabel.textProperty().bind( Bindings.format("%.2f", freq.valueProperty()) )
   }
 
