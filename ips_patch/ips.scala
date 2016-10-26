@@ -60,9 +60,7 @@ class IpsIterator(fname : String) extends Iterator[Patch] {
       } 
 
       read2() match {
-          case 0 => val rleLen = read2() 
-                    val rleVal = read().toByte
-                    new RlePatch(offs.toLong, rleLen, rleVal) 
+          case 0 => new RlePatch(offs.toLong, read2(), read().toByte) 
           case x => new BytePatch(offs.toLong, readBuf(x))
       } 
   }
@@ -74,7 +72,6 @@ class IpsIterator(fname : String) extends Iterator[Patch] {
   }
   private def read2() : Int = (read() << 8) + read()
   private def read3() : Int = (read2() << 8) + read() 
-
   private def readBuf(size : Int) : Array[Byte] = {
      val ans = new Array[Byte](size)
      if( src.read(ans,0,size) != size ) throw new Exception("Read error!")
