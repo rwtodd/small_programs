@@ -48,14 +48,14 @@ class IpsIterator(fname : String) extends Iterator[Patch] {
   private val header = new String(readBuf(5), java.nio.charset.StandardCharsets.US_ASCII)
   if(!header.equals("PATCH")) throw new Exception("Not a valid IPS file.")
 
-  private var isDone = false
-  override def hasNext() : Boolean = isDone
+  private var more = true
+  override def hasNext() : Boolean = more 
 
   override def next() : Patch = {
       val offs = read3()
       if((offs == EOFPatch.MARKER) && atEOF) {
            close()
-           isDone = true
+           more = false
            return EOFPatch
       } 
 
