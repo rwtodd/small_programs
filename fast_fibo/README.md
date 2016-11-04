@@ -10,6 +10,11 @@ The Go is definitely not as pretty as the haskell version, due to the
 cumbersome "math/big" interface, which precludes building compound
 expressions.  But, the result is fast.
 
+## Update: scala version
+
+I added a scala version, which comes out nicer even when usung `java.math.BigInteger`s due to 
+scala's loose syntax.  (yes, I'm aware that scala's lib has wrappers)
+
 ~~~~~~
 $ go run fast_fib.go 21000
 Argument was 21000
