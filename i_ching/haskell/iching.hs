@@ -140,6 +140,7 @@ disp_trigrams hex = do
    at 16 4  ; putStr $ upper_tri hex
    at 16 10 ; putStr $ lower_tri hex 
 
+disphex :: (Arr.Array Int [String]) -> Hexagram -> IO ()
 disphex descs hex =
   do
    disp_lines hex
