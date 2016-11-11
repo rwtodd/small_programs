@@ -16,7 +16,7 @@ object AsciiPic {
                                      BufferedImage.TYPE_INT_RGB)
       val gfx2d = scaled.createGraphics()
       gfx2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION,
-                             RenderingHints.VALUE_INTERPOLATION_BILINEAR)
+                             RenderingHints.VALUE_INTERPOLATION_BICUBIC)
       gfx2d.drawImage(image, 0, 0, scaled.getWidth(), scaled.getHeight, null)
       gfx2d.dispose()                             
       scaled

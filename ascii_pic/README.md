@@ -5,6 +5,9 @@ I had run across a [clojure version](http://www.bestinclass.dk/blog/tribute-stev
 and wanted to see how a scala implementation would compare.  NB: I used a more sophisticated 
 brightness formula and I did not implement the HTML output option, so the two are not 100% equivalent.
 
+
+I have since made a Go version, [also on github](https://github.com/rwtodd/misc-go/tree/master/asciipic).
+
 Here, I convert a picture of a soccer ball:
  
 ~~~~~~
