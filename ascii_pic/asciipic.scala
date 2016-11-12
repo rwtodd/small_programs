@@ -64,7 +64,9 @@ object AsciiPic {
     var ar : Double = 1.5 
     var fname = ""
     def procArgs( alist : List[String] ) : Unit = alist match { 
-       case "-w" :: w :: rest =>  width = w.toInt
+       case "-wob" :: rest     => chars = chars.reverse 
+                                  procArgs(rest) 
+       case "-w" :: w :: rest  => width = w.toInt
                                   procArgs(rest) 
        case "-ar" :: a :: rest => ar = a.toDouble
                                   procArgs(rest)
