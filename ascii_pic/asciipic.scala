@@ -34,28 +34,45 @@ object Thumbnail {
 object AsciiPic {
 
   // determine the brightness (0.0 to 255.0) of a Color
-  def brightness(c: Color)  = c.getRed * 0.2126 + c.getGreen * 0.7152 + c.getBlue * 0.0722 
+  private def brightness(c: Color)  = c.getRed * 0.2126 + c.getGreen * 0.7152 + c.getBlue * 0.0722 
 
   // select a character to use based on the given brightness
-  val chars = "#A@%$+=*:,. ".toArray
-  def selectChar(b: Double) = chars((b*chars.length/256.0).toInt)
+  private var chars = "#A@%$+=*:,. ".toArray
+  private def selectChar(b: Double) = chars((b*chars.length/256.0).toInt)
 
   // convert a single line of the input from RGB to ascii
-  def doLine(im: BufferedImage, y: Int) : String = 
+  private def doLine(im: BufferedImage, y: Int) : String = 
      (0 until im.getWidth)
           .map { x => selectChar(brightness(new Color(im.getRGB(x,y)))) }
           .mkString
 
   // convert an entire image from RGB to ascii
-  def convertImage(im: BufferedImage) : String =  
+  private def convertImage(im: BufferedImage) : String =  
       (0 until im.getHeight)
           .map { y => doLine(im,y) }
           .mkString("\n")
            
-  def main(args: Array[String]) : Unit = 
-    println( args.toList match { 
-              case fname :: Nil       =>  convertImage(Thumbnail(fname, 72, 1.5))
-              case fname :: sz :: Nil =>  convertImage(Thumbnail(fname, Integer.valueOf(sz), 1.5)
-              case _                  => "Usage: AsciiPic fname [width]"
-              })
+  private def usage() : Unit = {
+     System.err.println("Usage: asciipic [-help] [-w width] [-ar aspect-ratio] fname")
+     System.err.println("   default width: 72                               ")
+     System.err.println("   default aspect ratio of text (w/h): 1.5         ")
+     System.exit(1)
+  }
+
+  def main(args: Array[String]) : Unit = {
+    var width : Int = 72
+    var ar : Double = 1.5 
+    var fname = ""
+    def procArgs( alist : List[String] ) : Unit = alist match { 
+       case "-w" :: w :: rest =>  width = w.toInt
+                                  procArgs(rest) 
+       case "-ar" :: a :: rest => ar = a.toDouble
+                                  procArgs(rest)
+       case "-help" :: rest    => usage()
+       case f :: Nil           => fname = f
+       case _                  => usage()
+    }
+    procArgs(args.toList)
+    println(convertImage(Thumbnail(fname, width, ar)))
+  }
 }
