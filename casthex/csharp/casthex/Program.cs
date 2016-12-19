@@ -1,14 +1,14 @@
-﻿using System;
+using System;
 using System.Linq;
 
 namespace CastHex
 {
-    public partial class Program
-    {
+	public partial class Program
+	{
 
 	private static string[] LINES = new string[] { 
-              "\u2584\u2584   \u2584\u2584",
-	      "\u2584\u2584\u2584\u2584\u2584\u2584\u2584"
+		"\u2584\u2584   \u2584\u2584",
+		"\u2584\u2584\u2584\u2584\u2584\u2584\u2584"
 	};
 
 	private static void Display(String casting) {
@@ -20,8 +20,7 @@ namespace CastHex
 		var format = changes?"  {0}  {1}  {2}":"  {0}";
 		foreach(char c in casting.Reverse()) {
 			int idx1 = c&1;
-			int idx2 = idx1;
-		  	if(sixOrNine(c)) { idx2 = 1 - idx2; }
+			int idx2 = sixOrNine(c) ? (1 - idx1) : idx1;
 			wen1 = (wen1 << 1) | idx1;
 			wen2 = (wen2 << 1) | idx2;
 			Console.WriteLine(format, LINES[idx1], (idx1==idx2)?"   ":"-->", LINES[idx2]);
@@ -32,8 +31,8 @@ namespace CastHex
 		}
 	}
 
-        public static void Main(string[] args)
-        {
+		public static void Main(string[] args)
+		{
 		var arg = (args.Length > 0)?args[0]:"-coins";
 		var methods = new CastingMethods();
 
@@ -54,6 +53,6 @@ namespace CastHex
 		}
 
 		Display(arg);
-        }
-    }
+		}
+	}
 }
