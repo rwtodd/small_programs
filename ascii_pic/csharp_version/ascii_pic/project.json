@@ -5,7 +5,8 @@
     "emitEntryPoint": true
   },
   "dependencies": {
-	"ImageSharp": "1.0.0-alpha-000172"
+	"ImageSharp": "1.0.0-alpha-000172",
+  "Microsoft.Extensions.CommandLineUtils": "1.1.0"
   },
   "frameworks": {
     "netcoreapp1.1": {
