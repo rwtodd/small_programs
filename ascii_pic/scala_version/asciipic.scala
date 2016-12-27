@@ -53,15 +53,16 @@ object AsciiPic {
           .mkString("\n")
            
   private def usage() : Unit = {
-     System.err.println("Usage: asciipic [-help] [-w width] [-ar aspect-ratio] fname")
+     System.err.println("Usage: asciipic [-help] [-w width] [-ar aspect-ratio] [-wob]  fname")
      System.err.println("   default width: 72                               ")
-     System.err.println("   default aspect ratio of text (w/h): 1.5         ")
+     System.err.println("   default aspect ratio of text (h/w): 2.0         ")
+     System.err.println("   -wob reverses video for white-on-black terminals")
      System.exit(1)
   }
 
   def main(args: Array[String]) : Unit = {
     var width : Int = 72
-    var ar : Double = 1.5 
+    var ar : Double = 2.0 
     var fname = ""
     def procArgs( alist : List[String] ) : Unit = alist match { 
        case "-wob" :: rest     => chars = chars.reverse 
