@@ -72,21 +72,17 @@ combPair( [ F1, F2 | Fs ], [ N1 | Ns ] ) :-
   combine( F1, F2, N1 ),
   combPair( Fs, Ns ).
 
-nieces( Fs, Ns ) :- combPair( Fs, Ns ).
-witnesses( Ns, Ws ) :- combPair( Ns, Ws ).
-judge( Ws, J ) :- combPair( Ws, [J] ).
-
 % ~~~~ the program's entry point
 main :- 
   randomize,
   mothers( Moms ),
   daughters( Moms, Daughters ),
   append( Moms, Daughters, Line1 ),
-  nieces( Line1, Nieces ),
-  witnesses( Nieces, Witnesses ),
-  judge( Witnesses, Judge ),
+  combPair( Line1, Nieces ),
+  combPair( Nieces, Witnesses ),
+  combPair( Witnesses, Judge ),
   display_casting(2,5,Line1),
   display_casting(7,15,Nieces),
   display_casting(17,35,Witnesses),
-  display_casting(37,0,[Judge]),
+  display_casting(37,0,Judge),
   nl.
