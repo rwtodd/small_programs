@@ -1,6 +1,7 @@
 # Geomantic Shield
 
-This little prolog program produces and formats a geomantic shield.
+This little program produces and formats a geomantic shield.
+There are versions in Prolog and Scala. 
 
 ~~~~~
 $ ./castgeo 
