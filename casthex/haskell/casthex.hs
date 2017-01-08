@@ -4,23 +4,17 @@ import System.Environment (getArgs)
 import qualified Data.Array.IArray as Arr
 
 -- Casting Methods ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-casting proc = sequence $ take 6 $ repeat proc 
+casting proc = 
+   sequence $ take 6 $ repeat (do { gen <- Rnd.newStdGen ; return (proc gen) })
 
 addChar ch amt = (toEnum $ amt + fromEnum ch) :: Char
 
-coin = do 
-   g <- Rnd.newStdGen
-   return $ addChar '6' (sum $ take 3 $ Rnd.randomRs (0,1) g)
- 
-static = do
-   roll <- Rnd.getStdRandom (Rnd.randomR (0,1))
-   return $ addChar '7' roll 
-
-stalk = do
-   roll <- ( Rnd.getStdRandom (Rnd.randomR (0,15)) ) :: IO Int
-   return $ if roll == 0 then '6' else
-            if roll <= 5 then '7' else
-            if roll <= 12 then '8' else '9' 
+coin   gen = addChar '6' (sum $ take 3 $ Rnd.randomRs (0,1) gen)
+static gen = addChar '7' $ fst (Rnd.randomR (0,1) gen) 
+stalk  gen = let roll = (fst (Rnd.randomR (0,15) gen)) :: Int
+             in if roll == 0 then '6' else
+                if roll <= 5 then '7' else
+                if roll <= 12 then '8' else '9' 
               
 -- Hexagram Display Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 decode = foldr dec (0,0,[])
