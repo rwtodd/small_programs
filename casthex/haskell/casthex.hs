@@ -36,8 +36,8 @@ hexStrs casting =
    (hn1,hn2,strs) = decode casting
    changes   = hn1 /= hn2 
    lines     = reverse . (if changes then id else (map (take 9))) $ strs 
-   fullNames = [ hexNames Arr.! hn1 , " - Changing To ->", hexNames Arr.! hn2 ]
-   names     = if changes then fullNames else (take 1 fullNames)
+   names     = (if changes then id else (take 1))
+                 [hexNames Arr.! hn1, " - Changing To ->", hexNames Arr.! hn2]
 
 -- Argument Parsing / Main ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 getCasting "-coins"  = casting coin 
