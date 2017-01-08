@@ -25,6 +25,7 @@ import qualified Data.Array.IArray as Arr
 
 import Data.Bits(testBit)
 
+casting :: (Int -> Char) -> IO String
 casting proc = do
   gen <- Rnd.getStdGen 
   return $ map proc $ take 6 $ Rnd.randomRs (0,255) gen
@@ -34,11 +35,8 @@ bit num which | testBit num which = 1
 
 addChar ch amt = (toEnum $ amt + fromEnum ch) :: Char
 
-coin :: Int -> Char
 coin num = addChar '6' (sum $ map (bit num) [0,1,2])
-static :: Int -> Char
 static num = addChar '7' (bit num 0)
-stalk :: Int -> Char
 stalk num = let roll = num `mod` 16
               in if roll == 0 then '6' else
                  if roll <= 5 then '7' else
