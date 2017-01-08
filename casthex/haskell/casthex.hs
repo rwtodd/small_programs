@@ -4,18 +4,47 @@ import System.Environment (getArgs)
 import qualified Data.Array.IArray as Arr
 
 -- Casting Methods ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-casting proc = 
-   sequence $ take 6 $ repeat (Rnd.newStdGen >>= \g -> return (proc g)) 
+-- I'd like to use the below implementation, but as of 2017/01/08, 
+-- the System.Random implementation is _horrible_ with splitting
+-- their generator.  The results are clearly not random, at least
+-- for the short runs I use here.  So, I'll have to do something
+-- uglier.
+--
+-- casting proc = 
+--    sequence $ take 6 $ repeat (Rnd.newStdGen >>= \g -> return (proc g)) 
+-- 
+-- addChar ch amt = (toEnum $ amt + fromEnum ch) :: Char
+-- 
+-- coin   gen = addChar '6' (sum $ take 3 $ Rnd.randomRs (0,1) gen)
+-- static gen = addChar '7' $ fst (Rnd.randomR (0,1) gen) 
+-- stalk  gen = let roll = (fst (Rnd.randomR (0,15) gen)) :: Int
+--              in if roll == 0 then '6' else
+--                 if roll <= 5 then '7' else
+--                 if roll <= 12 then '8' else '9' 
+--               
+
+import Data.Bits(testBit)
+
+casting proc = do
+  gen <- Rnd.getStdGen 
+  return $ map proc $ take 6 $ Rnd.randomRs (0,255) gen
+
+bit num which | testBit num which = 1
+              | otherwise         = 0
 
 addChar ch amt = (toEnum $ amt + fromEnum ch) :: Char
 
-coin   gen = addChar '6' (sum $ take 3 $ Rnd.randomRs (0,1) gen)
-static gen = addChar '7' $ fst (Rnd.randomR (0,1) gen) 
-stalk  gen = let roll = (fst (Rnd.randomR (0,15) gen)) :: Int
-             in if roll == 0 then '6' else
-                if roll <= 5 then '7' else
-                if roll <= 12 then '8' else '9' 
-              
+coin :: Int -> Char
+coin num = addChar '6' (sum $ map (bit num) [0,1,2])
+static :: Int -> Char
+static num = addChar '7' (bit num 0)
+stalk :: Int -> Char
+stalk num = let roll = num `mod` 16
+              in if roll == 0 then '6' else
+                 if roll <= 5 then '7' else
+                 if roll <= 12 then '8' else '9' 
+               
+  
 -- Hexagram Display Functions ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 decode = foldr dec (0,0,[])
  where
