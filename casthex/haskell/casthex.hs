@@ -5,7 +5,7 @@ import qualified Data.Array.IArray as Arr
 
 -- Casting Methods ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 casting proc = 
-   sequence $ take 6 $ repeat (do { gen <- Rnd.newStdGen ; return (proc gen) })
+   sequence $ take 6 $ repeat (Rnd.newStdGen >>= \g -> return (proc g)) 
 
 addChar ch amt = (toEnum $ amt + fromEnum ch) :: Char
 
