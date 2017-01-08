@@ -16,9 +16,9 @@ combine [] = []
 combine (a : b : fs) = (mergeFigs a b) : (combine fs)
  where mergeFigs = zipWith (\a b -> if a == b then False else True) 
 
-rfig :: IO Figure -- random geomantic figure
-rfig = do { gen <- Rnd.newStdGen ; return $ take 4 (Rnd.randoms gen) }
-
+rfig :: IO Figure
+rfig = sequence $ take 4 $ repeat $ Rnd.getStdRandom (Rnd.random)
+   
 displine l = (mapM_ putStrLn l) >> (putStrLn "")
 
 main = do
