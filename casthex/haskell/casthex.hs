@@ -27,8 +27,8 @@ import Data.Bits(testBit)
 
 casting :: (Int -> Char) -> IO String
 casting proc = do
-  gen <- Rnd.getStdGen 
-  return $ map proc $ take 6 $ Rnd.randomRs (0,255) gen
+  nums <- sequence $ take 6 $ repeat (Rnd.getStdRandom $ Rnd.randomR (0,255))
+  return $ map proc nums 
 
 bit num which | testBit num which = 1
               | otherwise         = 0
