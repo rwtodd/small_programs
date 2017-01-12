@@ -23,10 +23,10 @@ object CastHex {
   private def decode(casting: String) : Tuple3[Int,Int,Vector[String]] = 
      casting.foldRight( (0,0,Vector[String]()) ) { (ch, ans) =>
         ch match {
-           case '6' => (ans._1*2,   ans._2*2+1, ans._3 :+ "  ---   ---   -->  ---------")
-           case '7' => (ans._1*2+1, ans._2*2+1, ans._3 :+ "  ---------        ---------")
-           case '8' => (ans._1*2,   ans._2*2,   ans._3 :+ "  ---   ---        ---   ---")
-           case '9' => (ans._1*2+1, ans._2*2,   ans._3 :+ "  ---------   -->  ---   ---")
+           case '6' => (ans._1*2,   ans._2*2+1, ans._3 :+ "  ---   ---   -->   ---------")
+           case '7' => (ans._1*2+1, ans._2*2+1, ans._3 :+ "  ---------         ---------")
+           case '8' => (ans._1*2,   ans._2*2,   ans._3 :+ "  ---   ---         ---   ---")
+           case '9' => (ans._1*2+1, ans._2*2,   ans._3 :+ "  ---------   -->   ---   ---")
         } 
      }
 
