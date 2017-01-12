@@ -6,44 +6,39 @@ import java.util.Random
 object Methods {
   private val rnd = new Random()
 
-  def coins() : String = 
-       (1 to 6).map { _ => ('6' + rnd.nextInt(2) + rnd.nextInt(2) + rnd.nextInt(2)).toChar }
-               .mkString
- 
-  def random() : String =
-       (1 to 6).map { _ => ('7' + rnd.nextInt(2)).toChar }
-               .mkString
+  def generateFrom( method : => Char ) = (1 to 6).map { _ => method }.mkString
 
-  def stalks() : String = 
-       (1 to 6).map { _ => rnd.nextInt(16) match {
-                              case 0            => '6'
-                              case x if x <= 5  => '7'
-                              case x if x <= 12 => '8'
-                              case _            => '9'
-                           } 
-                    }. mkString
+  def coins = ('6' + rnd.nextInt(2) + rnd.nextInt(2) + rnd.nextInt(2)).toChar 
+  def random = ('7' + rnd.nextInt(2)).toChar 
+  def stalks = rnd.nextInt(16) match {
+                    case 0            => '6'
+                    case x if x <= 5  => '7'
+                    case x if x <= 12 => '8'
+                    case _            => '9'
+               } 
 }
 
 object CastHex {
 
-  private val LINES = Array("\u2584\u2584   \u2584\u2584", "\u2584\u2584\u2584\u2584\u2584\u2584\u2584")
+  private def decode(casting: String) : Tuple3[Int,Int,Vector[String]] = 
+     casting.foldRight( (0,0,Vector[String]()) ) { (ch, ans) =>
+        ch match {
+           case '6' => (ans._1*2,   ans._2*2+1, ans._3 :+ "  ---   ---   -->  ---------")
+           case '7' => (ans._1*2+1, ans._2*2+1, ans._3 :+ "  ---------        ---------")
+           case '8' => (ans._1*2,   ans._2*2,   ans._3 :+ "  ---   ---        ---   ---")
+           case '9' => (ans._1*2+1, ans._2*2,   ans._3 :+ "  ---------   -->  ---   ---")
+        } 
+     }
 
   private def display(casting: String) : Unit = {
-     val sixOrNine = (ch:Char) => ch == '6' || ch == '9'
-     val changes = casting.exists(sixOrNine)
-     System.out.println(s"Casting: $casting")
-     var wen1 = 0
-     var wen2 = 0
-     val format = if(changes) "  %s   %s   %s\n" else "   %s\n" 
-     casting.reverse.foreach { ch =>
-         val idx1 = ch & 1    
-         val idx2 = if(sixOrNine(ch)) (1 - idx1) else idx1  
-         wen1 = (wen1 << 1) | idx1
-         wen2 = (wen2 << 1) | idx2
-         System.out.printf(format,LINES(idx1), 
-                                  if(idx1==idx2) "   " else "-->",   
-                                  LINES(idx2))
-     }
+     println(s"Casting: $casting\n")
+
+     val (wen1, wen2, lines) = decode(casting)
+     val changes = wen1 != wen2
+
+     lines.map( if(changes) identity else (_.take(11)) ).foreach(println)
+     println()
+
      System.out.printf("\n%s\n", hexName(wen1))
      if(changes) {
         System.out.printf(" - Changing To -->\n%s\n", hexName(wen2))
@@ -62,9 +57,9 @@ object CastHex {
      val arg = if(args.length == 0) "-coins" else args(0)
 
      val casting = arg match {
-       case "-coins" => Methods.coins()
-       case "-stalks" => Methods.stalks()
-       case "-static" => Methods.random()
+       case "-coins" => Methods.generateFrom(Methods.coins)
+       case "-stalks" => Methods.generateFrom(Methods.stalks)
+       case "-static" => Methods.generateFrom(Methods.random)
        case given if given.length == 6 && given.forall( ch => ch >= '6' && ch <= '9' ) => given
        case _ => usage() ; ""
      }
