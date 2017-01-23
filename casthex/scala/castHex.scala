@@ -37,12 +37,12 @@ object CastHex {
      val changes = wen1 != wen2
 
      lines.map( if(changes) identity else (_.take(11)) ).foreach(println)
-     println()
 
-     System.out.printf("\n%s\n", hexName(wen1))
+     println(s"\n${hexName(wen1)}")
      if(changes) {
-        System.out.printf(" - Changing To -->\n%s\n", hexName(wen2))
+        println(s" - Changing To -->\n${hexName(wen2)}")
      }
+     println()
   }
 
   private def usage() : Unit = {
