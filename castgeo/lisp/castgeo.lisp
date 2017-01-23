@@ -1,5 +1,13 @@
 ;; C A S T G E O
 ;; Create a geomantic shield
+(declaim (optimize (speed 3) (safety 0) (debug 0)))
+
+(setf *random-state* (make-random-state t))  ; new random nums each time loaded
+
+(defpackage :geomancy
+  (:use :common-lisp))
+
+(in-package :geomancy)
 
 ;; Create a random set of moms, along with
 ;; the transpositions as daughters.
@@ -40,7 +48,7 @@
     (princ #\Newline)))
 
 ;; The main function.
-(defun castgeo () 
+(defun cast () 
   (let* ((line1     (moms-daughters))
          (nieces    (combine line1))
          (witnesses (combine nieces))
@@ -50,4 +58,3 @@
     (displine 17 35 witnesses)
     (displine 37  0 judge)))
 
-(setf *random-state* (make-random-state t))
