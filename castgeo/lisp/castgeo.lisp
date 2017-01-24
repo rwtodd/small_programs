@@ -4,10 +4,11 @@
 
 (setf *random-state* (make-random-state t))  ; new random nums each time loaded
 
-(defpackage :geomancy
-  (:use :common-lisp))
+(defpackage :com.waywardcode.geomancy
+  (:use :common-lisp)
+  (:export :cast-geo))
 
-(in-package :geomancy)
+(in-package :com.waywardcode.geomancy)
 
 ;; Create a random set of moms, along with
 ;; the transpositions as daughters.
@@ -48,7 +49,7 @@
     (princ #\Newline)))
 
 ;; The main function.
-(defun cast () 
+(defun cast-geo () 
   (let* ((line1     (moms-daughters))
          (nieces    (combine line1))
          (witnesses (combine nieces))
