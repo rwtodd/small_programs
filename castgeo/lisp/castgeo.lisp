@@ -6,7 +6,7 @@
 
 (defpackage :com.waywardcode.geomancy
   (:use :common-lisp)
-  (:export :cast-geo))
+  (:export #:cast-geo))
 
 (in-package :com.waywardcode.geomancy)
 
