@@ -3,7 +3,7 @@
 
 (defpackage :com.waywardcode.casthex
   (:use :common-lisp)
-  (:export #:cast-hex #:coins #:static #:stalks))
+  (:export #:cast-hex))
 
 (in-package :com.waywardcode.casthex)
 
@@ -117,15 +117,15 @@
 
 ;; This is the exported, top-level function of the program. It lets the user
 ;; specify which casting method to use.
-(defun cast-hex (&optional (method 'coins))
-  (display-hex (case method
-		     (coins (cast-coins))
-		     (stalks (cast-stalks))
-		     (static (cast-static))
-		     (t (if (and (stringp method)
-				 (= (length method) 6)
-				 (not (find-if-not #'(lambda (ch) (char<= #\6 ch #\9)) method)))
-			    method
-			  (error "Usage: display-hex ['coins|'static|'stalks|<casting>]"))))))
+(defun cast-hex (&optional (method "coins"))
+  (display-hex (cond
+		((equal method "coins") (cast-coins))
+		((equal method "stalks") (cast-stalks))
+		((equal method "static") (cast-static))
+		((and (stringp method)
+		      (= (length method) 6)
+		      (not (find-if-not #'(lambda (ch) (char<= #\6 ch #\9)) method)))
+		 method)
+		(t    (error "Usage: display-hex [\"coins\"|\"static\"|\"stalks\"|<casting>]")))))
 
 
