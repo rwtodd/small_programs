@@ -3,47 +3,11 @@
 
 (defpackage :com.waywardcode.casthex
   (:use :common-lisp)
-  (:export #:cast-hex))
+  (:export #:cast-hex #:coins #:static #:stalks))
 
 (in-package :com.waywardcode.casthex)
 
-;; Methods of casting... MTD is an expression returning a number to be added to #\6
-;; for each of the 6 lines of a casting.
-(defmacro casting-of (mtd) `
-  (map-into (make-string 6) #'(lambda () (code-char (+ (char-code #\6) ,mtd)))))
-
-(defun cast-coins () (casting-of (+ (random 2) (random 2) (random 2))))
-(defun cast-static () (casting-of (+ (random 2) 1)))	      
-(defun cast-stalks ()
-  (casting-of
-     (let ((val (random 16)))
-       (cond ((= val 0)  0)
-	     ((< val 6)  1)
-	     ((< val 13) 2)
-	     (t          3)))))
-
-(defun decode-hex (str)
-  (let ((decoded
-	 (reduce #'(lambda (v tot)
-		     (let ((next-w1 (* (aref tot 0) 2))
-			   (next-w2 (* (aref tot 1) 2)))
-		       (case v
-			     (#\6 (vector next-w1       (+ next-w2 1) (cons "---   ---  =>  ---------" (aref tot 2))))
-			     (#\7 (vector (+ next-w1 1) (+ next-w2 1) (cons "---------      ---------" (aref tot 2))))
-			     (#\8 (vector next-w1       next-w2       (cons "---   ---      ---   ---" (aref tot 2))))
-			     (#\9 (vector (+ next-w1 1) next-w2       (cons "---------  =>  ---   ---" (aref tot 2)))))))
-		 str :initial-value (vector 0 0 nil) :from-end t)))
-    (values (aref decoded 0) (aref decoded 1) (reverse (aref decoded 2)))))
-
-(defun display-hex (str)
-  (multiple-value-bind (w1 w2 reps) (decode-hex str)
-		       (let ((changed (/= w1 w2)))
-			 (format t "Casting: ~s~%~%" str)
-			 (mapc #'(lambda (r) (princ (if changed r (subseq r 0 9))) (terpri)) reps)
-			 (format t "~%~a~%" (aref +hex-names+ w1))
-			 (if changed
-			     (format t " = Changing To =>~%~a~%" (aref +hex-names+ w2))))))
-
+;; A list of the hexagrams, in numeric (lines) order
 (defconstant +hex-names+
   #("02. K'un -- Earth"
     "24. Fu -- Return"
@@ -109,3 +73,59 @@
     "13. T'ung Je^n -- Sameness with People"
     "44. Kou -- Meeting"
     "01. Chi'en -- Heaven"))
+
+;; Methods of casting... MTD is an expression returning a number to be added to #\6
+;; for each of the 6 lines of a casting.
+(defmacro casting-of (mtd) `
+  (map-into (make-string 6) #'(lambda () (code-char (+ (char-code #\6) ,mtd)))))
+
+(defun cast-coins () (casting-of (+ (random 2) (random 2) (random 2))))
+(defun cast-static () (casting-of (+ (random 2) 1)))	      
+(defun cast-stalks ()
+  (casting-of
+     (let ((val (random 16)))
+       (cond ((= val 0)  0)
+	     ((< val 6)  1)
+	     ((< val 13) 2)
+	     (t          3)))))
+
+;; Decode a hexagram into King Wen numbers, and string representations of each line
+(defun decode-hex (str)
+  (let ((w1 0)      ; king wen number 1
+	(w2 0)      ; king wen number 2
+	(reps nil)) ; string representations
+    (loop for i from 5 downto 0 do
+	  (setf w1 (* w1 2)
+		w2 (* w2 2)
+		reps (cons (case (aref str i)
+				 (#\6 (incf w2)           "  ---   ---  =>  ---------")
+				 (#\7 (incf w1) (incf w2) "  ---------      ---------")
+				 (#\8                     "  ---   ---      ---   ---")
+				 (#\9 (incf w1)           "  ---------  =>  ---   ---"))
+			   reps)))
+    (values w1 w2 (nreverse reps))))
+
+;; Display hexagrams with names to the user
+(defun display-hex (str)
+  (multiple-value-bind (w1 w2 reps) (decode-hex str)
+		       (let ((changed (/= w1 w2)))
+			 (format t "Casting: ~s~%~%" str)
+			 (mapc #'(lambda (r) (princ (if changed r (subseq r 0 11))) (terpri)) reps)
+			 (format t "~%~a~%" (aref +hex-names+ w1))
+			 (if changed
+			     (format t " = Changing To =>~%~a~%" (aref +hex-names+ w2))))))
+
+;; This is the exported, top-level function of the program. It lets the user
+;; specify which casting method to use.
+(defun cast-hex (&optional (method 'coins))
+  (display-hex (case method
+		     (coins (cast-coins))
+		     (stalks (cast-stalks))
+		     (static (cast-static))
+		     (t (if (and (stringp method)
+				 (= (length method) 6)
+				 (not (find-if-not #'(lambda (ch) (char<= #\6 ch #\9)) method)))
+			    method
+			  (error "Usage: display-hex ['coins|'static|'stalks|<casting>]"))))))
+
+
