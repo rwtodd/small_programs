@@ -12,8 +12,14 @@ expressions.  But, the result is fast.
 
 ## Update: scala version
 
-I added a scala version, which comes out nicer even when usung `java.math.BigInteger`s due to 
+I added a scala version, which comes out nicer even when usung
+`java.math.BigInteger`s due to 
 scala's loose syntax.  (yes, I'm aware that scala's lib has wrappers)
+
+## Update: lisp version
+
+The lisp version makes use of automatic bignums, so it's very clean. It
+also uses `multiple-value-bind` in place of haskell's tuples.
 
 ~~~~~~
 $ go run fast_fib.go 21000
