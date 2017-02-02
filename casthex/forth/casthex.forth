@@ -103,7 +103,7 @@ CREATE casting 6 chars allot
 VARIABLE wen1   VARIABLE wen2   ( the wen numbers of the hex )
 CREATE reps 6 cells allot       ( string reps for lines )
 
-s" Bad Casting!" exception VALUE !BAD-CASTING!
+s" Malformed Casting!" exception VALUE !BAD-CASTING!
 
 : changed? wen1 @ wen2 @ <> ;
 
