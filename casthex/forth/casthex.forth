@@ -96,6 +96,9 @@ CREATE casting 6 chars allot
 
 : coins ( -- char ) [CHAR] 6  2 random 2 random 2 random + + + ;
 : static ( -- char ) [CHAR] 7 2 random + ;
+: stalks ( -- char ) 16 random   dup 1 and 0=
+    IF ( even ) 0 > 2 and    ELSE ( odd ) 7 < 2 and 1+  THEN
+    [CHAR] 6 + ;
 \ ***************************************************************
 
 
@@ -141,8 +144,9 @@ s" Malformed Casting!" exception VALUE !BAD-CASTING!
   ( parse the argument... )
        2dup s" -coins"  compare 0= IF ['] coins cast   2drop
   ELSE 2dup s" -static" compare 0= IF ['] static cast  2drop
+  ELSE 2dup s" -stalks" compare 0= IF ['] stalks cast  2drop  
   ELSE drop casting 6 cmove
-  THEN THEN ;
+  THEN THEN THEN ;
 
 utime xor seed !
 init(hexnames)
