@@ -108,6 +108,7 @@ CREATE reps 6 cells allot       ( string reps for lines )
 : mem2* dup @ 2 * swap ! ;
 : mem1+ dup @ 1+  swap ! ;
 : decode ( -- )
+  0 wen1 !  0 wen2 !
   0 5 DO
     wen1 mem2*   wen2 mem2*
     casting I chars + c@
