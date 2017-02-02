@@ -1,6 +1,6 @@
 \ ---------------------------- \
  \  C A S T  H E X              \
-  \  Cast an I-Chine hexagram    \
+  \  Cast an I-Ching hexagram    \
    \  (c) 2017 Richard Todd       \
     \ ---------------------------- \
 
@@ -103,6 +103,8 @@ CREATE casting 6 chars allot
 VARIABLE wen1   VARIABLE wen2   ( the wen numbers of the hex )
 CREATE reps 6 cells allot       ( string reps for lines )
 
+s" Bad Casting!" exception VALUE !BAD-CASTING!
+
 : changed? wen1 @ wen2 @ <> ;
 
 : mem2* dup @ 2 * swap ! ;
@@ -118,6 +120,7 @@ CREATE reps 6 cells allot       ( string reps for lines )
                             s"  ---------      ---------"  ENDOF
     [CHAR] 8 OF             s"  ---   ---      ---   ---"  ENDOF
     [CHAR] 9 OF wen1 mem1+  s"  ---------  =>  ---   ---"  ENDOF
+    !BAD-CASTING! throw
     ENDCASE
     drop reps I cells + !
   -1 +LOOP ;
