@@ -131,9 +131,17 @@ CREATE reps 6 cells allot       ( string reps for lines )
   wen1 @ .wen  IF ."  = Changing To =>" cr wen2 @ .wen THEN
   cr ;
   
+: generate ( -- )
+  ( use "-coins" if there was no command line arg )
+  next-arg 2dup 0 0 d= IF  2drop s" -coins" THEN
+  ( parse the argument... )
+       2dup s" -coins"  compare 0= IF ['] coins cast   2drop
+  ELSE 2dup s" -static" compare 0= IF ['] static cast  2drop
+  ELSE drop casting 6 cmove
+  THEN THEN ;
+
 utime xor seed !
 init(hexnames)
 cr cr
-' coins cast  decode .casting
+generate  decode .casting
 bye
-
