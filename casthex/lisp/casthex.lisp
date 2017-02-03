@@ -124,7 +124,7 @@
 		((equal method "static") (cast-static))
 		((and (stringp method)
 		      (= (length method) 6)
-		      (not (find-if-not #'(lambda (ch) (char<= #\6 ch #\9)) method)))
+		      (every #'(lambda (ch) (char<= #\6 ch #\9)) method))
 		 method)
 		(t    (error "Usage: display-hex [\"coins\"|\"static\"|\"stalks\"|<casting>]")))))
 
