@@ -8,19 +8,9 @@ namespace CastHex
     class CastingMethods
     {
         private Random rnd = new Random();
-        private StringBuilder sb = new StringBuilder(6);
-
-        private String cast(Func<Char> fn) {
-            sb.Clear();
-            for(int i = 0; i < 6; i++) {
-                sb.Append(fn());
-            }
-            return sb.ToString();
-        }
 
         // cast via the yarrow stalks method
-        public string CastStalks() =>
-           cast( () => {
+        public Char CastStalks() {
                 var p = rnd.Next(16);
                 char ans = '6';
                 switch (p & 1)
@@ -29,14 +19,13 @@ namespace CastHex
                     case 1: ans = (p <= 5 ? '9' : '7'); break;
                 }
                 return ans;
-            });
+        }
         
-
         // cast via the 3-coins method
-        public string CastCoins() => cast( () => (char)('6' + rnd.Next(2) + rnd.Next(2) + rnd.Next(2)));
+        public Char CastCoins() =>  (char)('6' + rnd.Next(2) + rnd.Next(2) + rnd.Next(2));
         
         // cast a random hex with no moving lines
-        public string CastRandom() => cast( () => (char)('7' + rnd.Next(2) ));
+        public Char CastRandom() => (char)('7' + rnd.Next(2) );
 
     }
 }

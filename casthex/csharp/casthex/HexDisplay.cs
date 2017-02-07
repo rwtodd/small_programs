@@ -2,13 +2,25 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Collections.Generic;
+using System.Text;
 
 namespace CastHex
 {
-    public partial class Formatter
+    public partial class Casting
     {
+        private String casting;
 
-        public void Format(TextWriter tw, String casting) {
+        public Casting(Func<Char> method) {
+            var sb = new StringBuilder(6);
+            for(int i = 0; i < 6; i++) sb.Append(method());
+            casting = sb.ToString();
+        }
+
+        public Casting(String c) {
+            casting = c;
+        }
+
+        public void Format(TextWriter tw) {
             var reps = new List<String>(6);
             var wen1 = 0;
             var wen2 = 0;

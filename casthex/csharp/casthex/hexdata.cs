@@ -1,6 +1,6 @@
 namespace CastHex
 {
-    public partial class Formatter
+    public partial class Casting
     {
         private static string[] hexName = new string[] {
     "02. K'un -- Earth",
