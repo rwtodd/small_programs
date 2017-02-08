@@ -10,16 +10,25 @@ namespace CastHex
     {
         private String casting;
 
+        /// <summary>
+        /// Create a casting from a provided function.
+        /// </summary>
         public Casting(Func<Char> method) {
             var sb = new StringBuilder(6);
             for(int i = 0; i < 6; i++) sb.Append(method());
             casting = sb.ToString();
         }
 
+        /// <summary>
+        /// Create a casting from the '6','7','8','9' string representation.
+        /// </summary>
         public Casting(String c) {
             casting = c;
         }
 
+        /// <summary>
+        /// Output a description of the casting on the given TextWriter.
+        /// </summary>
         public void Format(TextWriter tw) {
             var reps = new List<String>(6);
             var wen1 = 0;
