@@ -76,11 +76,10 @@ let hexNames = [
 ]
 
 /// Generates a casting from a per-line `method` closure.
-func casting(method: () -> Int) -> [Character] {
-    var ans = Array<Character>(repeating: "6", count: 6)
+func casting(method: () -> Int) -> [Int] {
+    var ans = Array<Int>(repeating: 0, count: 6)
     for i in 0..<6 {
-        let value = String(method())
-        ans[i] = value[value.startIndex]
+        ans[i] = method()
     }
     return ans
 }
@@ -103,43 +102,43 @@ func stalks() -> Int {
 }
 
 /// Converts an input string into a casting, checking for validity.
-func casting(input: String) -> [Character]? {
+func casting(input: String) -> [Int]? {
     let arr = Array(input.characters)
     if arr.count != 6 || arr.contains(where: {$0 < "6" || $0 > "9"}) {
         return nil
     }
-    return arr
+    return arr.map { Int(String($0))! }
 }
 
 /// Decodes a cating into king wen hexagram numbers, and a string representation.
-func decode(_ casting: [Character]) -> (Int, Int, [String]) {
-    return casting.reversed().reduce((0,0,[]),
-                              { var (w1,w2,reps) = $0
-                                w1 *= 2
-                                w2 *= 2
-                                switch $1 {
-                                    case "6":
-                                        reps.append("  ---   ---  ==>  ---------")
-                                       return (w1,w2+1,reps)
-                                    case "7":
-                                        reps.append("  ---------       ---------")
-                                        return (w1+1,w2+1, reps)
-                                    case "8":
-                                        reps.append("  ---   ---       ---   ---")
-                                        return (w1,w2,reps)
-                                    default:
-                                        reps.append("  ---------  ==>  ---   ---")
-                                        return (w1+1,w2,reps)
-                                }
-    })
+func decode(_ casting: [Int]) -> (Int, Int, [String]) {
+    return casting.reversed().reduce((0,0,[])) { prev, ch in
+                    var (w1,w2,reps) = prev
+                    w1 *= 2
+                    w2 *= 2
+                    switch ch {
+                    case 6:
+                        reps.append("  ---   ---  ==>  ---------")
+                        return (w1,w2+1,reps)
+                    case 7:
+                        reps.append("  ---------       ---------")
+                        return (w1+1,w2+1, reps)
+                    case 8:
+                        reps.append("  ---   ---       ---   ---")
+                        return (w1,w2,reps)
+                    default:
+                        reps.append("  ---------  ==>  ---   ---")
+                        return (w1+1,w2,reps)
+                    }
+    }
 }
 
 /// Formats a casting on stdout.
-func display(_ casting: [Character]) -> Void {
+func display(_ casting: [Int]) -> Void {
     let (w1,w2,reps) = decode(casting)
     let changed = w1 != w2
-    print("Casting: <\(String(casting))>")
-    print()
+    print("Casting: <\(casting.reduce(0, { $0*10+$1 }))>\n")
+    
     reps.map( changed ? { $0 } : { $0.substring(to: $0.index($0.startIndex, offsetBy: 11)) })
         .forEach( { print($0) })
     print()
@@ -151,7 +150,7 @@ func display(_ casting: [Character]) -> Void {
 
 var opt = "-coins"
 if CommandLine.argc > 1 { opt = CommandLine.arguments[1] }
-var lines : [Character]
+var lines : [Int]
 switch opt {
 case "-coins":
     lines = casting(method: coins)
