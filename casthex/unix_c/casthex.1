@@ -1,0 +1,46 @@
+.TH casthex "1" "11 February 2017" "" "Utility"
+
+.SH NAME
+casthex \- cast an I-Ching reading.
+
+.SH SYNOPSIS
+.BR casthex " [" \-coins | \-stalks | \-static | (casting) ]
+
+.SH DESCRIPTION
+casthex generates an I-Ching divination (a 
+.IR casting "), "
+and displays the resulting hexagrams on the terminal along
+with their names and numbers in the King Wen sequence.
+
+.SH OPTIONS
+.TP
+.B \-coins
+Simulate casting with the 3-coins method. This is the default, if no other options are given.
+.TP
+.B \-stalks
+Simulate casting with the yarrow-stalks method. 
+.TP
+.B \-static
+Choose a random hexagram with no moving lines.
+.TP
+.B (casting)
+Specify a casting manually.  The format follows the text of the I-Ching, with 
+six digits between 6 and 9.  Each digit represents a single line of the 
+casting, from bottom to top.  
+
+.SH EXAMPLES
+To specify a casting with all "old yang" lines:
+.PP
+.nf
+.RS
+casthex 999999 
+.RE
+.fi
+
+.SH AUTHOR
+Richard Todd (richard.weslty.todd@gmail.com)
+
+.SH "SEE ALSO"
+.BR castgeo (1)
+.BR iching (1)
+
