@@ -97,11 +97,13 @@ int main(int argc, char**argv) {
   srand(time(NULL));
 
   if(!determine_casting(arg)) {
-    fprintf(stderr, "Usage: casthex [-coins|-stalks|-static|<casting>]\n(see man page for details)");
+    fputs("Usage: casthex [-coins|-stalks|-static|<casting>]\n",stderr);
     exit(1);
   }
   
-  /* decode the casting into 2 king-wen numbers, and a list of line representations. */
+  /* decode the casting into 2 king-wen numbers, and a list of 
+   * line representations. 
+   */
   int wen1 = 0; 
   int wen2 = 0; 
   char *rep[6]; 
