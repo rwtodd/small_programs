@@ -17,7 +17,7 @@ RM=rm
 CCOPT=-std=c11 -march=native -O2
 
 clean:
-	-${RM} *.o *.a *~ casthex
+	-${RM} *.o *.a *~ iching
 
 install: all
 	${MKDIR} -p ${PREFIX}/bin
