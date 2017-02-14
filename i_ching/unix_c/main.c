@@ -43,6 +43,13 @@ static hexagram inner_hex(hexagram h) {
   return ((h << 1 & -7) | (h >> 1 & 7)) & 63;
 }
 
+/* change_line changes a single line in a given
+ * hexagram
+ */
+static hexagram change_line(hexagram h, int which) {
+   return (h ^ (1 << (which - 1))) & 63;
+}
+
 /* Store the trigram descriptions in anotehr file to
  * keep this file tidy.
  */
@@ -72,10 +79,49 @@ history[hidx] = (c)
  * ******************************************************
  */
 
-void draw_hexagram(const struct hex_data *const hex) {
+static void draw_hexagram(const struct hex_data *const hex) {
   mvprintw(2, 2, hex->name); clrtoeol();
 }
 
+/* clear_question prepares a line for questions, and can also
+ * be used to clear the line afterward.
+ */
+static void clear_question(void) {
+  move(20,2);
+  clrtoeol();
+}
+
+/* which_line asks the user which line to change */
+static int which_line(void) {
+  clear_question();
+  printw("Which line do you want to change (1 - 6)? ");
+  refresh();
+  int num = getch() - '0';
+  if(num > 6 || num < 1)
+     num = 7;
+  clear_question();
+  return num;
+}
+
+/* which_hex asks the user which hexagram to view */
+static int which_hex(void) {
+  clear_question();
+  printw("Which hexagram do you want to visit (1 - 64)? ");
+  refresh();
+  int ans = getch();
+  addch(ans);
+  refresh();
+  ans = ans - '0';
+  int digit2 = getch();
+  if(digit2 != '\n') ans = ans*10 + (digit2 - '0');
+  clear_question();
+  return (ans - 1) & 63;
+}
+
+/* ******************************************************
+ * M A I N   E V E N T   L O O P
+ * ******************************************************
+ */
 
 int main(int arc, char **argv) {
   initscr();
@@ -90,6 +136,7 @@ int main(int arc, char **argv) {
   int cur = history[hidx];
   while(1) {
      draw_hexagram(&hex_data[cur]);
+     refresh();
      char c = getch();
      switch(c) {
 
@@ -119,7 +166,8 @@ int main(int arc, char **argv) {
 
      /* go to a specific wen-sequence hexagram */
      case 'g':
-        /* todo */ 
+        cur = which_hex(); 
+        advance_history(cur);
         break;
 
      /* Generate the inner hexagram */
@@ -131,6 +179,12 @@ int main(int arc, char **argv) {
      /* invert the current hexagram */
      case 'v':
         cur = lookup_lines(~(hex_data[cur].lines) & 63);
+        advance_history(cur);
+        break;
+
+     /* change a hexagram line */
+     case 'c':
+        cur = lookup_lines(change_line(hex_data[cur].lines, which_line()));
         advance_history(cur);
         break;
  
