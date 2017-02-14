@@ -36,6 +36,13 @@ static int lookup_lines(hexagram h) {
   return i;
 }
 
+/* Here's a function to generate an inner hexagram
+ * from the given lines.
+ */
+static hexagram inner_hex(hexagram h) {
+  return ((h << 1 & -7) | (h >> 1 & 7)) & 63;
+}
+
 /* Store the trigram descriptions in anotehr file to
  * keep this file tidy.
  */
@@ -51,6 +58,13 @@ static const char *const trigrams[] = {
 /* We'll keep a 10-deep history of visited hexagrams. */
 int history[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 int hidx = 0;
+
+/* many commands will advance the history, so we will
+ * make a macro for ergonomics 
+ */
+#define advance_history(c) \
+if(++hidx == 10) hidx = 0; \
+history[hidx] = (c)
 
 
 /* ******************************************************
@@ -82,15 +96,13 @@ int main(int arc, char **argv) {
      /* next wen sequence hexagram */
      case 'n':  
         if(++cur == 64) cur = 0;
-        if(++hidx == 10) hidx = 0;
-        history[hidx] = cur;
+        advance_history(cur);
         break;
 
      /* previous wen sequence hexagram */
      case 'p':
         if(--cur == -1) cur = 63;
-        if(++hidx == 10) hidx = 0;
-        history[hidx] = cur;
+        advance_history(cur);
         break;
 
      /* go back in the history */
@@ -110,11 +122,16 @@ int main(int arc, char **argv) {
         /* todo */ 
         break;
 
-     /* invert the current hexagram */
+     /* Generate the inner hexagram */
      case 'i':
+        cur = lookup_lines(inner_hex(hex_data[cur].lines));
+        advance_history(cur);
+        break;
+
+     /* invert the current hexagram */
+     case 'v':
         cur = lookup_lines(~(hex_data[cur].lines) & 63);
-        if(++hidx == 10) hidx = 0;
-        history[hidx] = cur;
+        advance_history(cur);
         break;
  
      /* quit */
