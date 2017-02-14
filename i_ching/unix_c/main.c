@@ -146,7 +146,18 @@ static int which_hex(void) {
  * ******************************************************
  */
 
-int main(int arc, char **argv) {
+int main(int argc, char **argv) {
+  /* if the user selected a hexagram from the command-line, go there. */
+  if(argc > 1) {
+     int selected = atoi(argv[1]) - 1;    
+     if((selected < 0) || (selected > 63)) {
+        fprintf(stderr, "Bad argument <%s>!\n", argv[1]);
+        return 1; 
+     }
+     for(int i = 0; i < 10; ++i) history[i] = selected;
+  }
+  
+  /* set up the screen. */
   initscr();
   cbreak();
   noecho();
@@ -156,7 +167,10 @@ int main(int arc, char **argv) {
   mvprintw(19,2,
      "(n)ext/(p)rev (f)orw/(b)ack (i)nner in(v)ert (c)hange (g)oto (q)uit");
 
+  /* cur will be the index into `hex_data' at all times. */
   int cur = history[hidx];
+
+  /* the main loop draws a hexagram and awaits a command */
   while(1) {
      draw_hexagram(&hex_data[cur]);
      char c = getch();
