@@ -1,11 +1,11 @@
 {
-  "Chi'en -- Heaven",
+  "1.  Chi'en -- Heaven",
   "One of the four timeless hexagrams; pure yang, it",
   "represents strength, firmness, primal unified energy.",
    63
 },
 {
-  "2. K'un -- Earth",
+  "2.  K'un -- Earth",
   "One of the four timeless hexagrams; pure yin; represents",
   "receptivity, humility, obedience, yielding, flexibility, essence.",
   0
