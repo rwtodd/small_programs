@@ -63,8 +63,8 @@ static const char *const trigrams[] = {
  */
 
 /* We'll keep a 10-deep history of visited hexagrams. */
-int history[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-int hidx = 0;
+static int history[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+static int hidx = 0;
 
 /* many commands will advance the history, so we will
  * make a macro for ergonomics 
