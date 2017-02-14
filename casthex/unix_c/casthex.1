@@ -7,13 +7,31 @@ casthex \- cast an I-Ching reading.
 .BR casthex " [" coins | stalks | static | (casting) ]...
 
 .SH DESCRIPTION
-casthex generates I-Ching divinations (a 
-.IR casting "), "
-and displays the resulting hexagrams on the terminal along
-with their names and numbers in the King Wen sequence.  More
+casthex generates I-Ching divinations (called 
+.I castings 
+here), and displays the resulting hexagrams on the terminal along
+with their names and King Wen numbers.  More
 than one casting can be specified in a single invocation. If
 no arguments are given, then castings are read from
 .IR stdin .
+
+A casting, whether generated or given by the user, consists of
+six characters, corresponding to the six lines of an I-Ching 
+hexagram from bottom to top.  Each character is a digit between
+6 and 9, with the following meanings:
+
+.TP
+.B 6 
+An old yin line (yin moving to yang) 
+.TP
+.B 7 
+A yang line 
+.TP
+.B 8 
+A yin line 
+.TP
+.B 9 
+An old yang line (yang moving to yin) 
 
 .SH OPTIONS
 .TP
@@ -31,9 +49,8 @@ yin lines will be much less frequent than old yang lines.
 Choose a random hexagram with no moving lines.
 .TP
 .B (casting)
-Specify a casting manually.  The format follows the text of the I-Ching, with 
-six digits between 6 and 9.  Each digit represents a single line of the 
-casting, from bottom to top.  
+Specify a casting manually by giving six digits between 6 and 9.  The 
+meaning of the digits is given above in the Description section. 
 
 .SH EXAMPLES
 To request a casting with coins, and also see the casting 
