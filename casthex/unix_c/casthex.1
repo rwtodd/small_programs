@@ -4,23 +4,30 @@
 casthex \- cast an I-Ching reading.
 
 .SH SYNOPSIS
-.BR casthex " [" \-coins | \-stalks | \-static | (casting) ]
+.BR casthex " [" coins | stalks | static | (casting) ]...
 
 .SH DESCRIPTION
-casthex generates an I-Ching divination (a 
+casthex generates I-Ching divinations (a 
 .IR casting "), "
 and displays the resulting hexagrams on the terminal along
-with their names and numbers in the King Wen sequence.
+with their names and numbers in the King Wen sequence.  More
+than one casting can be specified in a single invocation. If
+no arguments are given, then castings are read from
+.IR stdin .
 
 .SH OPTIONS
 .TP
-.B \-coins
-Simulate casting with the 3-coins method. This is the default, if no other options are given.
+.B coins
+Simulate casting with the 3-coins method.  With coins, the chances
+of an 
+.I old
+(moving) line are 3 in 8.  Yin and Yang lines are evenly distributed.  
 .TP
-.B \-stalks
-Simulate casting with the yarrow-stalks method. 
+.B stalks
+Simulate casting with the yarrow-stalks method.  With stalks, old
+yin lines will be much less frequent than old yang lines.
 .TP
-.B \-static
+.B static
 Choose a random hexagram with no moving lines.
 .TP
 .B (casting)
@@ -29,11 +36,12 @@ six digits between 6 and 9.  Each digit represents a single line of the
 casting, from bottom to top.  
 
 .SH EXAMPLES
-To specify a casting with all "old yang" lines:
+To request a casting with coins, and also see the casting 
+with all "old yang" lines:
 .PP
 .nf
 .RS
-casthex 999999 
+casthex coins 999999 
 .RE
 .fi
 

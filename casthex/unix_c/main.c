@@ -6,6 +6,7 @@
 #include<stdbool.h>
 #include<stdlib.h>
 #include<time.h>
+#include<ctype.h>
 
 /* these are the four ways a line of a casting can be 
  * represented 
@@ -64,11 +65,11 @@ static char stalks_method() {
 static bool determine_casting(const char * const argument) {
   bool response = true;
 
-  if(!strcmp(argument, "-coins")) {
+  if(!strcmp(argument, "coins")) {
      do_casting(coins_method);
-  } else if(!strcmp(argument, "-stalks")) {
+  } else if(!strcmp(argument, "stalks")) {
      do_casting(stalks_method);
-  } else if(!strcmp(argument, "-static")) {
+  } else if(!strcmp(argument, "static")) {
      do_casting(static_method);
   } else {
      /* copy the input to `casting`, checking that it looks
@@ -88,16 +89,12 @@ static bool determine_casting(const char * const argument) {
   return response; /* did we have an error? */
 }
 
-int main(int argc, char**argv) {
-  const char *arg = "-coins";  /* default */
-  if(argc > 1) {
-     arg = argv[1];
-  }
-
-  srand(time(NULL));
-
+/* display_casting prints a representation of 
+ * the `arg' casting to the terminal.
+ */
+static void display_casting(const char *const arg) {
   if(!determine_casting(arg)) {
-    fputs("Usage: casthex [-coins|-stalks|-static|<casting>]\n",stderr);
+    fprintf(stderr,"casthex: bad input <%s>\n",arg);
     exit(1);
   }
   
@@ -120,7 +117,6 @@ int main(int argc, char**argv) {
      }
   }
 
-  
   /* now, display the hexagram(s) */
   bool changed = wen1 != wen2;
 
@@ -140,6 +136,33 @@ int main(int argc, char**argv) {
   printf("\n%s\n", names[wen1]);
   if (changed) {
     printf(" = Changing to =>\n%s\n", names[wen2]);
+  }
+  puts("\n");
+}
+
+/* main goes through the arguments, one-by-one, parsing and
+ * performing the desired castings.  If none are given on 
+ * the command line, the instructions are read from stdin.
+ */
+int main(int argc, char**argv) {
+  srand(time(NULL));
+
+  if(argc > 1) {
+     for(int i = 1; i < argc; ++i) {
+        display_casting(argv[i]);
+     }
+  } else {
+     /* allow for some space on either side of the arg */
+     char inbuf[20];
+     while(fgets(inbuf, sizeof(inbuf), stdin)) {
+         inbuf[sizeof(inbuf)-1] = '\0';
+         char *arg = inbuf;
+         while(isspace(*arg)) arg++;         
+         char *end = arg;
+         while((*end != '\0') && !isspace(*end)) end++;
+         *end = '\0';
+         display_casting(arg);
+     }
   }
 
   return 0;
