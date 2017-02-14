@@ -21,9 +21,9 @@ clean:
 
 install: all
 	${MKDIR} -p ${PREFIX}/bin
-	${MV} casthex ${PREFIX}/bin
+	${MV} iching ${PREFIX}/bin
 	${MKDIR} -p ${PREFIX}/man/man1
-	${CP} casthex.1 ${PREFIX}/man/man1
+	${CP} iching.1 ${PREFIX}/man/man1
 
 iching: main.c  hex_data.h tri_data.h
 	${CC} ${CCOPT} main.c -o iching -lncurses

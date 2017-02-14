@@ -1,0 +1,62 @@
+.TH iching "1" "14 February 2017" "" "Utility"
+
+.SH NAME
+iching \- explore the I-Ching hexagrams. 
+
+.SH SYNOPSIS
+.B iching
+
+.SH DESCRIPTION
+iching presents a text-based, interactive display of
+the I-Ching hexagrams. Commands are provided to 
+navigate and transform the hexagrams, and a short
+description of each hexagram and its trigrams 
+is given.
+
+.SH COMMANDS 
+.TP
+.B "n (next)"
+Moves to the next hexagram in the King Wen sequence, wrapping
+around to the beginning of the sequence if necessary.
+.TP
+.B "p (prev)"
+Moves to the previous hexagram in the King Wen sequence, wrapping
+around to the end of the sequence if necessary.
+.TP
+.B "f (forward)"
+Moves to the next hexagram in the viewing history.  The program
+tracks the last 10 hexagrams viewed, and allows the user to
+trace and retrace his steps.
+.TP
+.B "b (back)"
+Moves to the previous hexagram in the viewing history.  The program
+tracks the last 10 hexagrams viewed, and allows the user to
+trace and retrace his steps.
+.TP
+.B "i (inner)"
+Generates the inner hexagram from the current hexagram.  The inner
+hexagram uses lines 3, 4, and 5 for its upper trigram, and lines
+2, 3, and 4 for its lower trigram. 
+.TP
+.B "v (invert)"
+Inverts all the lines of the current hexagram, changing yin to
+yang and vice versa.
+.B "c (change)"
+The program will ask which line to change, and 
+then proceed to flip that line from yin to yang
+(or vice versa).
+.TP
+.B "g (goto)"
+The program will ask which hexagram to view, and 
+then proceed to the requested hexagram. 
+.TP
+.B "q (quit)"
+Exits the program.
+
+.SH AUTHOR
+Richard Todd (richard.weslty.todd@gmail.com)
+
+.SH "SEE ALSO"
+.BR casthex (1)
+.BR castgeo (1)
+

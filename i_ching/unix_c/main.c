@@ -1,6 +1,6 @@
-#include<ncurses.h>
 #include<stdio.h>
 #include<stdlib.h>
+#include<ncurses.h>
 
 /* ******************************************************
  * D A T A
@@ -79,15 +79,41 @@ history[hidx] = (c)
  * ******************************************************
  */
 
+/* line_chars describe how we draw yin and yang
+ */
+static char *line_chars[] = {
+  "#####     #####",
+  "###############"
+};
+
+/* draw_hexagram displays the given `hex' on screen */
 static void draw_hexagram(const struct hex_data *const hex) {
+  /* title */
   mvprintw(2, 2, hex->name); clrtoeol();
+
+  /* lines */
+  hexagram lines = hex->lines;
+  int low_tri = lines & 7;
+  int hi_tri = lines >> 3;
+  mvprintw(14, 2, line_chars[lines&1]); lines >>= 1;
+  mvprintw(12, 2, line_chars[lines&1]); lines >>= 1;
+  printw("     ");  printw(trigrams[low_tri]);
+  mvprintw(10, 2, line_chars[lines&1]); lines >>= 1;
+  mvprintw(8,  2, line_chars[lines&1]); lines >>= 1;
+  mvprintw(6,  2, line_chars[lines&1]); lines >>= 1;
+  printw("     ");  printw(trigrams[hi_tri]);
+  mvprintw(4,  2, line_chars[lines&1]);
+
+  /* description */
+  mvprintw(16, 2, hex->desc1); clrtoeol();
+  mvprintw(17, 2, hex->desc2); clrtoeol();
 }
 
 /* clear_question prepares a line for questions, and can also
  * be used to clear the line afterward.
  */
 static void clear_question(void) {
-  move(20,2);
+  move(21,2);
   clrtoeol();
 }
 
@@ -95,7 +121,6 @@ static void clear_question(void) {
 static int which_line(void) {
   clear_question();
   printw("Which line do you want to change (1 - 6)? ");
-  refresh();
   int num = getch() - '0';
   if(num > 6 || num < 1)
      num = 7;
@@ -107,10 +132,8 @@ static int which_line(void) {
 static int which_hex(void) {
   clear_question();
   printw("Which hexagram do you want to visit (1 - 64)? ");
-  refresh();
   int ans = getch();
   addch(ans);
-  refresh();
   ans = ans - '0';
   int digit2 = getch();
   if(digit2 != '\n') ans = ans*10 + (digit2 - '0');
@@ -130,13 +153,12 @@ int main(int arc, char **argv) {
   curs_set(0);
 
   /* display a list of commands */
-  mvprintw(18,2,
+  mvprintw(19,2,
      "(n)ext/(p)rev (f)orw/(b)ack (i)nner in(v)ert (c)hange (g)oto (q)uit");
 
   int cur = history[hidx];
   while(1) {
      draw_hexagram(&hex_data[cur]);
-     refresh();
      char c = getch();
      switch(c) {
 
