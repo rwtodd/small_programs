@@ -49,7 +49,7 @@ methods = setmetatable(methods, {
             end
 })
 
-require 'hex' -- our C library
+hex = require "hex" -- our C library
 
 -- proc processes a casting named by 'w', which it looks up
 -- in the methods table.

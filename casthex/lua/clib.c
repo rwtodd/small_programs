@@ -78,9 +78,7 @@ static const struct luaL_Reg hexlib[] = {
   {NULL, NULL}
 };
 
-LUALIB_API int luaopen_hex(lua_State *L) { 
-/*   luaL_register(L, "hex", hexlib); */
+int luaopen_hex(lua_State *L) { 
    luaL_newlib(L, hexlib); 
-   lua_setglobal(L, "hex");
    return 1; 
 }
