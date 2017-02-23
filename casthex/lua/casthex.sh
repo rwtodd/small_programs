@@ -1,3 +1,3 @@
 #!/bin/bash
 
-lua ~/bin/f.casthex/casthex.luac $*
+LUA_CPATH=~/bin/f.casthex/?.so lua ~/bin/f.casthex/casthex.luac $*

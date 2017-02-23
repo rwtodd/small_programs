@@ -1,19 +1,19 @@
 # Set these variables for your system
 PREFIX=$(HOME)
-LUADIR=$(HOME)/brew
+LUADIR=$(HOME)
 
 INC=-I$(LUADIR)/include
-LIB=-L$(LUADIR)/lib
+OPT=-march=native -O2
 
 .PHONY: all install clean
 
 all: hex.so casthex.luac
 
 hex.so: clib.c hexnames.h
-	cc clib.c $(INC) -fpic -shared $(LIB) -llua.5.2 -o $@
+	cc $(OPT) $(INC) -fPIC -dynamiclib -undefined dynamic_lookup  -o $@ clib.c
 
 casthex.luac: casthex.lua
-	luac -o $@ $? 
+	$(LUADIR)/bin/luac -o $@ $? 
 
 install: all
 	-mkdir -p $(PREFIX)/bin/f.casthex
