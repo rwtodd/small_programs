@@ -4,7 +4,8 @@
 iching \- explore the I-Ching hexagrams. 
 
 .SH SYNOPSIS
-.B iching
+.B iching 
+.RI [ hex ]
 
 .SH DESCRIPTION
 iching presents a text-based, interactive display of
@@ -12,6 +13,13 @@ the I-Ching hexagrams. Commands are provided to
 navigate and transform the hexagrams, and a short
 description of each hexagram and its trigrams 
 is given.
+
+.SH OPTIONS
+.TP
+.B hex
+If a King Wen sequence number (1-64) is given on the command
+line, the program will start on that hexagram.  Otherwise, the
+program starts on hexagram 1.
 
 .SH COMMANDS 
 .TP
