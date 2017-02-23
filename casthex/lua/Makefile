@@ -9,11 +9,14 @@ OPT=-march=native -O2
 
 all: hex.so casthex.luac
 
-hex.so: clib.c hexnames.h
-	cc $(OPT) $(INC) -fPIC -dynamiclib -undefined dynamic_lookup  -o $@ clib.c
+clib.o: clib.c hexnames.h
+	cc $(OPT) $(INC) -fpic -c -o $@ clib.c
+
+hex.so: clib.o 
+	cc $(OPT) -shared -fpic -undefined dynamic_lookup -o $@ $< 
 
 casthex.luac: casthex.lua
-	$(LUADIR)/bin/luac -o $@ $? 
+	$(LUADIR)/bin/luac -o $@ $<
 
 install: all
 	-mkdir -p $(PREFIX)/bin/f.casthex
@@ -21,4 +24,4 @@ install: all
 	cp casthex.sh $(PREFIX)/bin
 
 clean:
-	-rm casthex.luac hex.so
+	-rm casthex.luac hex.so clib.o 
