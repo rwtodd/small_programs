@@ -58,6 +58,6 @@ Since this is basically a script, I thought it would make sense to
 make a javascript (nashorn) version from the java source. The 
 translation was pretty easy.
 
-Much later (2017) I made a lua version as part of the process of leaning
+Much later (2017) I made a lua version as part of the process of learning
 lua.
 

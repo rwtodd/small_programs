@@ -16,7 +16,7 @@ print('Adjusting Player Chars')
 local STATS_LEN = 32
 game:seek('set', 2)
 
-for idx = 0,15 do
+for idx = 1,16 do
 	local block = game:read(STATS_LEN)
 	local fixed = table.concat {
 		block:sub(1,0x0B), 
@@ -40,7 +40,7 @@ game:write(bytes9999:rep(2)) -- food, gold
 game:write(bytes99:rep(3))   -- keys, gems, torches
 
 game:seek('set', 0x20B)
-game:write(bytes99)   -- skull keys
+game:write(bytes99)          -- skull keys
 
 game:seek('set', 0x24A)
 game:write(bytes99:rep(64))  -- spells
