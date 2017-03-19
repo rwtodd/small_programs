@@ -1,9 +1,15 @@
 # Set these variables for your system
 PREFIX=$(HOME)
-LUADIR=$(HOME)
+LUADIR=/usr/local
 
 INC=-I$(LUADIR)/include
-OPT=-march=native -O2
+OPT=-std=c11 -march=native -O2
+
+ifeq ($(shell uname -s),Linux)
+  LOPT=-shared -fpic
+else
+  LOPT=-shared -fpic -undefined dynamic_lookup
+endif
 
 .PHONY: all install clean
 
@@ -13,7 +19,7 @@ clib.o: clib.c hexnames.h
 	cc $(OPT) $(INC) -fpic -c -o $@ clib.c
 
 hex.so: clib.o 
-	cc $(OPT) -shared -fpic -undefined dynamic_lookup -o $@ $< 
+	cc $(OPT) $(LOPT) -o $@ $< 
 
 casthex.luac: casthex.lua
 	$(LUADIR)/bin/luac -o $@ $<
