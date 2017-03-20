@@ -1,14 +1,14 @@
 # Set these variables for your system
-PREFIX=$(HOME)
-LUADIR=/usr/local
+PREFIX ?= $(HOME)
+LUADIR ?= $(PREFIX)
 
 INC=-I$(LUADIR)/include
 OPT=-std=c11 -march=native -O2
 
-ifeq ($(shell uname -s),Linux)
-  LOPT=-shared -fpic
-else
+ifeq ($(shell uname -s),Darwin)
   LOPT=-shared -fpic -undefined dynamic_lookup
+else
+  LOPT=-shared -fpic
 endif
 
 .PHONY: all install clean
