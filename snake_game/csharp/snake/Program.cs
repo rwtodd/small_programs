@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading;
 
 namespace SnakeGame
 {
@@ -8,6 +9,20 @@ namespace SnakeGame
         private bool grow;
         private ConsoleColor orig;
         private int Speed = 70;
+		private ConsoleKey lastKey;
+
+        private void InitConsole() {
+            Console.Clear();
+            Console.CursorVisible = false;
+            orig = Console.ForegroundColor;
+			var thread = new Thread(() => { 
+				while(true) {
+					lastKey = Console.ReadKey(true).Key;
+				}
+			});
+			thread.IsBackground = true;
+			thread.Start();
+        }
 
         private void ResetConsole() {
             Console.CursorVisible = true;
@@ -20,8 +35,7 @@ namespace SnakeGame
         }
 
         public void ReadUserInput() {
-            if(Console.KeyAvailable) {
-                switch(Console.ReadKey().Key) {
+                switch(lastKey) {
                 case ConsoleKey.UpArrow:
                     snake.ChangeDirection(0,-1);
                     break;
@@ -49,7 +63,6 @@ namespace SnakeGame
                     Environment.Exit(0);
                     break;
                 }
-            }
         }
 
         public void DrawUpdates(MovementResult mr) {
@@ -67,9 +80,6 @@ namespace SnakeGame
         }
 
         public void RunGame() {
-            Console.Clear();
-            Console.CursorVisible = false;
-            orig = Console.ForegroundColor;
 
             // write the initial location
             Console.SetCursorPosition(10,10);
@@ -90,6 +100,7 @@ namespace SnakeGame
         public static void Main(string[] args)
         {
             var game = new Program();
+            game.InitConsole();
             game.RunGame();
             game.ResetConsole();
         }
