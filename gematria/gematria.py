@@ -1,7 +1,7 @@
 import copy
 
 def compute_gematria(w): 
-  return sum([ ord(i) - ord('a') + 1 for i in w ])
+  return sum(ord(i) - ord('a') + 1 for i in w)
 
 class word:
   def __init__(self, w):
@@ -53,9 +53,8 @@ def main():
   fl = open('fl.txt',"r")
   whole_thing = fl.read().split()
   fl.close()
-  for w in [ word(str) for str in whole_thing ]:
-    if(w.val() > 0):
-      theDict.add(w)
+  for w in (word(str) for str in whole_thing):
+    if w.val() > 0:  theDict.add(w)
   print("Clusters ~~~~~~")
   display_clusters(theDict)
   print("\n\nMost common words ~~~~~")
