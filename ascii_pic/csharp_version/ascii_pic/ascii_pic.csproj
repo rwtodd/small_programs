@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+    <DebugType>portable</DebugType>
+    <AssemblyName>ascii_pic</AssemblyName>
+    <OutputType>Exe</OutputType>
+    <PackageId>ascii_pic</PackageId>
+    <PackageTargetFallback>$(PackageTargetFallback);dnxcore50</PackageTargetFallback>
+    <RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="ImageSharp" Version="1.0.0-alpha-000172" />
+    <PackageReference Include="Microsoft.Extensions.CommandLineUtils" Version="1.1.0" />
+  </ItemGroup>
+
+</Project>
